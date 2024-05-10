@@ -28,7 +28,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 40px;
 }
 
 .wave-group {
@@ -36,7 +36,7 @@
 }
 
 .wave-group .input {
-    font-size: 16px;
+    font-size: 20px;
     padding: 10px;
     display: block;
     border: none;
@@ -50,7 +50,7 @@
 
 .wave-group .label {
     color: #999;
-    font-size: 18px;
+    font-size: 22px;
     position: absolute;
     pointer-events: none;
     left: 5px;
@@ -65,7 +65,7 @@
 
 .wave-group .input:focus ~ label .label-char,
 .wave-group .input:valid ~ label .label-char {
-    transform: translateY(-20px);
+    transform: translateY(-22px);
     font-size: 14px;
     color: #5264AE;
 }

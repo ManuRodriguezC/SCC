@@ -28,23 +28,24 @@
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="lastname" type="text" class="input">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="lastname" class="label">
               <span class="label-char" style="--index: 0">A</span>
               <span class="label-char" style="--index: 1">p</span>
               <span class="label-char" style="--index: 2">e</span>
               <span class="label-char" style="--index: 3">l</span>
               <span class="label-char" style="--index: 4">l</span>
-              <span class="label-char" style="--index: 5">d</span>
-              <span class="label-char" style="--index: 6">o</span>
+              <span class="label-char" style="--index: 5">i</span>
+              <span class="label-char" style="--index: 6">d</span>
+              <span class="label-char" style="--index: 7">o</span>
             </label>
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="document" type="number" class="input">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="document" class="label">
               <span class="label-char" style="--index: 0">D</span>
               <span class="label-char" style="--index: 1">o</span>
               <span class="label-char" style="--index: 2">c</span>
@@ -58,9 +59,9 @@
           </div>
           
         <div class="wave-group">
-            <input required id="name" type="text" class="input">
+          <input required id="salario" type="text" class="input" oninput="handleChange('salario')">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="salario" class="label">
               <span class="label-char" style="--index: 0">S</span>
               <span class="label-char" style="--index: 1">a</span>
               <span class="label-char" style="--index: 2">l</span>
@@ -72,15 +73,15 @@
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="others" type="text" class="input" oninput="handleChange('others')">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="others" class="label">
               <span class="label-char" style="--index: 0">O</span>
               <span class="label-char" style="--index: 1">t</span>
               <span class="label-char" style="--index: 2">r</span>
               <span class="label-char" style="--index: 3">o</span>
               <span class="label-char" style="--index: 4">s</span>
-              <span class="label-char" style="--index: 6">_</span>
+              <span class="label-char" style="--index: 6">&nbsp;</span>
               <span class="label-char" style="--index: 7">I</span>
               <span class="label-char" style="--index: 8">n</span>
               <span class="label-char" style="--index: 9">g</span>
@@ -93,9 +94,9 @@
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="debit" type="text" class="input"  oninput="handleChange('debit')">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="debit" class="label">
               <span class="label-char" style="--index: 0">D</span>
               <span class="label-char" style="--index: 1">e</span>
               <span class="label-char" style="--index: 2">b</span>
@@ -107,14 +108,14 @@
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="years" type="number" class="input">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="years" class="label">
               <span class="label-char" style="--index: 0">A</span>
               <span class="label-char" style="--index: 1">ñ</span>
               <span class="label-char" style="--index: 2">o</span>
               <span class="label-char" style="--index: 3">s</span>
-              <span class="label-char" style="--index: 4">_</span>
+              <span class="label-char" style="--index: 4">&nbsp;</span>
               <span class="label-char" style="--index: 5">A</span>
               <span class="label-char" style="--index: 6">f</span>
               <span class="label-char" style="--index: 7">i</span>
@@ -129,9 +130,9 @@
           </div>
 
           <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="score" type="number" class="input">
             <span class="bar"></span>
-            <label for="name" class="label">
+            <label for="score" class="label">
               <span class="label-char" style="--index: 0">S</span>
               <span class="label-char" style="--index: 1">c</span>
               <span class="label-char" style="--index: 2">o</span>
@@ -141,3 +142,20 @@
           </div>
     </div>
 </div>
+
+<script>
+  function handleChange(idName) {
+      var inputElement = document.getElementById(idName);
+      inputElement.value = inputElement.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+      var inputValue = inputElement.value.replace('.', '').split("").reverse(); // Reversa el valor para facilitar la inserción de puntos
+      var newValue = '';
+      for (var i = 0; i < inputValue.length; i++) {
+          if (i % 3 == 0 && i!= 0) { // Agrega un punto cada tres dígitos, excepto al inicio
+              newValue += '.';
+          }
+          newValue += inputValue[i];
+      }
+      inputElement.value = newValue.split("").reverse().join(""); // Revierte el valor y lo establece en el input
+  }
+
+</script>

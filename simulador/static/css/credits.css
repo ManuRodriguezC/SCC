@@ -6,13 +6,17 @@
     align-items: center;
     width: 100%;
     height: auto;
-    margin: 20px;
     background-color: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     overflow: hidden;
     flex-direction: column;
     position: relative;
-    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 2s ease-out;
+  }
+
+  #flex-container.visible {
+    opacity: 1;
   }
   
   #top-zone {
@@ -32,7 +36,7 @@
   }
   
   .list .item {
-    width: 33.33%;
+    width: 50%;
   }
 
   .item input {
@@ -47,6 +51,7 @@
     line-height: 50px;
     position: relative;
     font-size: 20px;
+    background: #3255a0c4;
   }
   
   .item label:hover {
@@ -106,41 +111,17 @@
     opacity: 1;
     -webkit-animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
     animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    font-size: 25px;
   }
   
-  input:checked ~ label.label_testimonial-1 {
-    color: #d64541;
-    background-color: #edecec;
+  input:checked ~ label.label_testimonial-1,  input:checked ~ label.label_testimonial-2 {
+    color: #fff;
+    background-color: #3255a0;
     border: 1px solid #afaeae;
   }
   
-  input:checked ~ label.label_testimonial-2 {
-    color: #423bf2;
-    background-color: #edecec;
-    border: 1px solid #afaeae;
-  }
-  
-  input:checked ~ label.label_testimonial-3 {
-    color: #00b16a;
-    background-color: #edecec;
-    border: 1px solid #afaeae;
-  }
-  
-  .label_testimonial-1:hover {
-    background-image: linear-gradient(to bottom, #ffffff, #d64541a3);
-    font-size: 1.2rem;
-    transition: font-size 0.5s;
-  }
-  
-  .label_testimonial-2:hover {
-    background-image: linear-gradient(to bottom, #ffffff, #423bf2a3);
-    font-size: 1.2rem;
-    transition: font-size 0.5s;
-  }
-  
-  .label_testimonial-3:hover {
-    background-image: linear-gradient(to bottom, #ffffff, #00b16aa3);
-    font-size: 1.2rem;
+  .label_testimonial-1:hover , .label_testimonial-2:hover {
+    font-size: 22px;
     transition: font-size 0.5s;
   }
 
@@ -160,5 +141,13 @@
     font-weight: bold;
     color: #33475c;
   }
-  /* ============== End Testimonial Flexbox ============= */
   
+
+  @media (max-width:420px) {
+    .item label {
+      font-size: 13px;
+    }
+    input:checked ~ label {
+      font-size: 14px;
+    }
+  }

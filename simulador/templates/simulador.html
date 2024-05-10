@@ -13,6 +13,7 @@
         <p class="text-p">Con tasas bajas de interés mensual y ámplios plazos de pago, son la mejor solución ante la falta de liquidez de nuestros asociados.</p>
         <img src="{% static 'images/image4.jpg' %}" alt="">
         <img src="{% static 'images/image1.jpg' %}" alt="">
+        <img src="{% static 'images/image3.jpg' %}" alt="">
     </picture>
 
     <div class="info">
@@ -27,11 +28,9 @@
     <div class="content">
         <form action="">
             {% include "personaldatas.html" %}
-            <!-- 
-            {% include "financialdatas.html" %}
 
-            {% include "types.html" %} -->
-
+            {% include "types.html" %}
+            <button type="submit">Calcular</button>
         </form>
     </div>
 {% endblock content %}
