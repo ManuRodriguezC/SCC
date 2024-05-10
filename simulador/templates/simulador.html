@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Simulador Cootratiempo{% endblock title %}
+
+{% block styles %}
+    <link href="{% static "css/simulador.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+    <picture class="image-pub">
+        <h2 class="text">Líneas de Crédito</h2>
+        <p class="text-p">Con tasas bajas de interés mensual y ámplios plazos de pago, son la mejor solución ante la falta de liquidez de nuestros asociados.</p>
+        <img src="{% static 'images/image4.jpg' %}" alt="">
+        <img src="{% static 'images/image1.jpg' %}" alt="">
+    </picture>
+
+    <div class="info">
+        <h3 class="info-title">Tres simples pasos para generar tu simulacion de credito.</h3>
+        <div class="cont-datas">
+            <p>1. Ingresa tus datos personales.</p>
+            <p>2. Selecciona tu linea y tipo de credito.</p>
+            <p>3. Ingresa el monto y plazo de tu credito.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <form action="">
+            {% include "personaldatas.html" %}
+            <!-- 
+            {% include "financialdatas.html" %}
+
+            {% include "types.html" %} -->
+
+        </form>
+    </div>
+{% endblock content %}
+
+

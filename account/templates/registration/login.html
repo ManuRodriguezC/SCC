@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+    <link href="{% static "css/login.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block title %}Inicio de Sesion{% endblock title %}
+
+{% block content %}
+    <form class="login-form" action="{% url 'login' %}" method="post">
+        <p class="title">Iniciar Sesion</p>
+        <p class="message">Inicia sesion para acceder al administrador</p>
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <p><input type="submit" value="Log-in"></p>
+    </form>
+{% endblock content %}

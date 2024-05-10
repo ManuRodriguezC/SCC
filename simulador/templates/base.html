@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>
+            {% block title %}{% endblock title %}
+        </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block styles %}{% endblock styles %}
+        <link href="{% static "css/base.css" %}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Freeman&family=Source+Sans+3:ital,wght@0,200;0,300;0,700;0,900;1,200&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <picture>
+                <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
+            </picture>
+            <h2 class="title">Simulador Cootratiempo</h2>
+        </header>
+        <div class="mix"></div>
+
+        {% block content %}{% endblock content %}
+
+        <script src="{% static 'js/script.js' %}" async defer></script>
+    </body>
+</html>
