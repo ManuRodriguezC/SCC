@@ -5,33 +5,45 @@
 {% endblock styles %}
 
 
-<div id="flex-container" class="testimonials">
-    <div id="top-zone">
-      <ul class="list">
-        
-        <li class="item">
-          <input type="radio" id="radio_testimonial-1" name="basic_carousel" checked="checked" />
-          <label class="label_testimonial-1" for="radio_testimonial-1">Créditos Deuda / Aporte</label>
-          <div class="content-test content_testimonial-1">
-            <h1>Créditos Deuda/Aporte</h1>
-            <p>“The team really takes pride in their work. If I didn’t know any better I would think they actually worked for my company.”</p>
-          </div>
-        </li>
-        
+<!-- <div id="flex-container" class="testimonials">
+  <div id="top-zone">
+    <ul class="list">
+      
+      <li class="item">
+        <input type="radio" id="radio_testimonial-1" name="basic_carousel" checked="checked" />
+        <label class="label_testimonial-1" for="radio_testimonial-1">Créditos Deuda / Aporte</label>
+        <div class="content-test content_testimonial-1">
+          {% include "types/deuda.html" %}
+        </div>
+      </li>
+      
         <li class="item">
           <input type="radio" id="radio_testimonial-2" name="basic_carousel" />
           <label class="label_testimonial-2" for="radio_testimonial-2">Créditos Extracupo</label>
           <div class="content-test content_testimonial-2">
-            <h1>Créditos Extracupo</h1>
-            <p>“Quite simply… the service offers prompt response time to my visitors and helps me to better know what type of project a potential customer wants.”</p>
+            {% include "types/extracupo.html" %}
           </div>
-      </ul>
-    </div>
-    <div id="bottom-zone"></div>
-  </div>
+        </ul>
+      </div>
+      <div id="bottom-zone"></div>
+    </div> -->
+    
+    <div class="content-types" id="flex-container">
+      <div class="options">
+        <p id="bt-type-1" class="bt-type">Creditos Deuda / Aporte</p>
+        <p id="bt-type-2" class="bt-type">Creditos Extracupo</p>
+      </div>
 
-  <script>
-    window.addEventListener('scroll', function() {
+        <div class="type-1" id="type-1">
+          {% include "types/deuda.html" %}
+        </div>
+        <div class="type-2" id="type-2">
+          {% include "types/extracupo.html" %}
+        </div>
+    </div>
+
+    <script>
+      window.addEventListener('scroll', function() {
       const componente = document.getElementById('flex-container');
       const rect = componente.getBoundingClientRect();
       const isVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
@@ -41,5 +53,28 @@
       } else {
         componente.classList.remove('visible');
       }
-    });    
+    });
+
+    bt1 = document.getElementById('bt-type-1')
+    bt2 = document.getElementById('bt-type-2')
+
+    t1 = document.getElementById('type-1')
+    t2 = document.getElementById('type-2')
+
+    bt1.addEventListener('click', () => {
+      if (!t1.classList.contains('visible-1')) {
+        t1.classList.add('visible-1');
+        t2.classList.remove('visible-2');
+        bt1.classList.add('select')
+        bt2.classList.remove('select')
+      }
+    })
+    bt2.addEventListener('click', () => {
+      if (!t2.classList.contains('visible-2')) {
+        t2.classList.add('visible-2');
+        t1.classList.remove('visible-1');
+        bt1.classList.remove('select')
+        bt2.classList.add('select')
+      }
+    })
   </script>

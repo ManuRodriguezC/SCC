@@ -22,4 +22,13 @@ class User(models.Model):
     document = models.IntegerField()
     type = models.CharField(max_length=20, choices=TYPE_ASOCIADOS.items())
     time = models.CharField(max_length=20, choices=TYPE_TIME.items())
-    
+
+class DeudaAporte(models.Model):
+    """"""
+    name = models.CharField(max_length=100)
+    tasa = models.FloatField()
+
+class Extracupo(models.Model):
+    """"""
+    name = models.CharField(max_length=100)
+    tasa = models.FloatField()

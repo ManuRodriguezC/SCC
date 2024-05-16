@@ -23,6 +23,7 @@
 }
 
 .personal-datas {
+    width: 70%;
     margin: 40px 20px;
     display: flex;
     flex-wrap: wrap;

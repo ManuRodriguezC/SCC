@@ -18,6 +18,10 @@ body {
     user-select: none;
 }
 
+select, option {
+    user-select: all; 
+}
+
 header {
     width: 100%;
     display: flex;

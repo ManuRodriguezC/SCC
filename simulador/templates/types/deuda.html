@@ -1,0 +1,44 @@
+{% load static %}
+
+{% block styles %}
+    <link href="{% static "css/deuda.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+    <h1>Créditos Deuda/Aporte</h1>
+    <p>Selecciona tu tipo de credito e ingresa monto y cuotas.</p>
+
+    <div id="form-values" class="form-values">
+        <label for="type">Tipo de credito</label>
+        <select name="type" id="type" required>
+            <option value="">-- Seleccione Credito --</option>
+            {% for type in deudaAporte %}
+            <option value={{type.name}}>{{type.name}}</option>
+            {% endfor %}
+        </select>
+
+        <div class="personal-datas">
+            <div class="wave-group">
+                <input required id="monto" type="text" class="input">
+                <span class="bar"></span>
+                <label for="monto" class="label">
+                    <span class="label-char" style="--index: 0">M</span>
+                    <span class="label-char" style="--index: 1">o</span>
+                    <span class="label-char" style="--index: 2">n</span>
+                    <span class="label-char" style="--index: 3">t</span>
+                    <span class="label-char" style="--index: 4">o</span>
+                </label>
+            </div>
+            <div class="wave-group">
+                <input required id="cuotas" type="number" class="input">
+                <span class="bar"></span>
+                <label for="cuotas" class="label">
+                    <span class="label-char" style="--index: 0">C</span>
+                    <span class="label-char" style="--index: 1">u</span>
+                    <span class="label-char" style="--index: 2">o</span>
+                    <span class="label-char" style="--index: 3">t</span>
+                    <span class="label-char" style="--index: 4">a</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
