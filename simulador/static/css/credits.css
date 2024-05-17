@@ -1,166 +1,33 @@
   /* ============= Begin Testimonial Flexbox ============ */
-  #flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    overflow: hidden;
-    flex-direction: column;
-    position: relative;
-    opacity: 0;
-    transition: opacity 2s ease-out;
-  }
-
-  #flex-container.visible {
-    opacity: 1;
-  }
-  
-  #top-zone {
-    height: 80px;
-    flex: 0 0 auto;
-    display: flex;
-    width: 100%;
-  }
-  
-  #top-zone .list {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-  }
-  
-  .list .item {
-    width: 50%;
-  }
-
-  .item input {
-    display: none;
-  }
-  
-  .item label {
-    display: block;
-    opacity: 0.5;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    position: relative;
-    font-size: 20px;
-    background: #3255a0c4;
-  }
-  
-  .item label:hover {
-    opacity: 0.75;
-    cursor: pointer;
-    font-size: 22px;
-  }
-  
-  .content-test {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transform: translateY(100%);
-    height: 50%;
-    width: 100%;
-    transition: 0.5s ease-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    pointer-events: none;
-  }
-  
-  .content-test p {
-    max-width: 80%;
-    text-align: center;
-  }
-  
-  #bottom-zone {
-    width: 100%;
-    height: 250px;
-  }
-  
-  input:checked ~ .content-test {
-    transform: translateY(-50%);
-    transition: -webkit-transform 1s;
-    transition: transform 1s;
-    transition: transform 1s, -webkit-transform 1s;
-    opacity: 1;
-  }
-  
-  .content_testimonial-1 h1 {
-    color: #d64541;
-    text-align: center;
-  }
-  
-  .content_testimonial-2 h1 {
-    color: #423bf2;
-  }
-  
-  .content_testimonial-3 h1 {
-    color: #00b16a;
-  }
-  
-  input:checked ~ label {
-    opacity: 1;
-    -webkit-animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    animation: all 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    font-size: 25px;
-  }
-  
-  input:checked ~ label.label_testimonial-1,  input:checked ~ label.label_testimonial-2 {
-    color: #fff;
-    background-color: #3255a0;
-    border: 1px solid #afaeae;
-  }
-  
-  .label_testimonial-1:hover , .label_testimonial-2:hover {
-    font-size: 22px;
-    transition: font-size 0.5s;
-  }
-
-  .label_testimonial-1, .label_testimonial-2, .label_testimonial-3 {
-    transition: font-size 0.5s;
-  }
-  
-  p.testimonialState {
-    margin-top: -5px;
-    font-size: 0.8rem;
-    font-style: italic;
-    color: #808080d4;
-  }
-  
-  p.testimonialFrom {
-    margin-top: 5px;
-    font-weight: bold;
-    color: #33475c;
-  }
-  
-
-  @media (max-width:420px) {
-    .item label {
-      font-size: 13px;
-    }
-    input:checked ~ label {
-      font-size: 14px;
-    }
-  }
-
-
-
-
-
-
-.content-types {
+#flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
   width: 100%;
-  height: 500px;
-  background-color: #fdfdfd;
+  height: auto;
+  overflow: hidden;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transition: opacity 2s ease-out;
+}
+
+#flex-container.visible {
+    opacity: 1;
+}
+
+.title-2 {
+  color: #fff;
+  font-weight: 100;
+  width: 100%;
+  padding: 20px 0px;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  background-color: #3255a0;
+  font-size: 30px;
 }
 
 .options {
@@ -185,15 +52,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #3255a07a;
+  font-size: 20px;
   color: #fff;
-  font-size: 25px;
+  cursor: pointer;
+  background-color: #3255a0;
+  border-radius: 0px 0px 20px 20px;
   transition: background-color 0.3s ease-in-out, font-size 0.3s ease-in-out;
 }
 
 .select {
-  background-color: #3255a0e6;
   font-size: 28px;
+  color: #3255a0;
+  background-color: #fff;
+  opacity: 1;
 }
 
 .type-1,.type-2 {
@@ -221,6 +92,9 @@
   .select {
     font-size: 22px;
   }
+  .title-2 {
+    font-size: 25px;
+  }
 }
 
 @media (max-width: 420px) {
@@ -231,6 +105,5 @@
     font-size: 17px;
   }
 }
-
 
 

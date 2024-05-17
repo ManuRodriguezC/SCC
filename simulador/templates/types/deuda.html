@@ -4,41 +4,62 @@
     <link href="{% static "css/deuda.css" %}" rel="stylesheet">
 {% endblock styles %}
 
-    <h1>Créditos Deuda/Aporte</h1>
-    <p>Selecciona tu tipo de credito e ingresa monto y cuotas.</p>
+    <h1 class="title-types">Créditos Deuda / Aporte</h1>
+    <p class="complement">Tenemos diferentes tipos de creditos, selecciona la opciones que mas se ajuste a tu interes.</p>
 
     <div id="form-values" class="form-values">
-        <label for="type">Tipo de credito</label>
-        <select name="type" id="type" required>
+        <select id="typecredit-1" name="typecredit" required>
             <option value="">-- Seleccione Credito --</option>
-            {% for type in deudaAporte %}
+            {% for type in deudaaporte %}
             <option value={{type.name}}>{{type.name}}</option>
             {% endfor %}
         </select>
 
-        <div class="personal-datas">
-            <div class="wave-group">
-                <input required id="monto" type="text" class="input">
-                <span class="bar"></span>
-                <label for="monto" class="label">
-                    <span class="label-char" style="--index: 0">M</span>
-                    <span class="label-char" style="--index: 1">o</span>
-                    <span class="label-char" style="--index: 2">n</span>
-                    <span class="label-char" style="--index: 3">t</span>
-                    <span class="label-char" style="--index: 4">o</span>
-                </label>
-            </div>
-            <div class="wave-group">
-                <input required id="cuotas" type="number" class="input">
-                <span class="bar"></span>
-                <label for="cuotas" class="label">
-                    <span class="label-char" style="--index: 0">C</span>
-                    <span class="label-char" style="--index: 1">u</span>
-                    <span class="label-char" style="--index: 2">o</span>
-                    <span class="label-char" style="--index: 3">t</span>
-                    <span class="label-char" style="--index: 4">a</span>
-                </label>
+        <div class="three">
+            <h2 class="title-2">3. Ingresa el monto y plazo de tu credito.</h2>
+
+            <span>Puede haber datos aca!</span>
+            
+            <div class="personal-datas">
+                <div class="wave-group">
+                    <input required id="monto-1" type="text" class="input" name="monto" oninput="handleChange('monto')">
+                    <span class="bar"></span>
+                    <label for="monto" class="label">
+                        <span class="label-char" style="--index: 0">M</span>
+                        <span class="label-char" style="--index: 1">o</span>
+                        <span class="label-char" style="--index: 2">n</span>
+                        <span class="label-char" style="--index: 3">t</span>
+                        <span class="label-char" style="--index: 4">o</span>
+                    </label>
+                </div>
+                <div class="wave-group">
+                    <input required id="cuotas-1" type="number" class="input" name="cuotas">
+                    <span class="bar"></span>
+                    <label for="cuotas" class="label">
+                        <span class="label-char" style="--index: 0">C</span>
+                        <span class="label-char" style="--index: 1">u</span>
+                        <span class="label-char" style="--index: 2">o</span>
+                        <span class="label-char" style="--index: 3">t</span>
+                        <span class="label-char" style="--index: 4">a</span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
 
+    <script>
+        function handleChange(idName) {
+            var inputElement = document.getElementById(idName);
+            inputElement.value = inputElement.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+            var inputValue = inputElement.value.replace('.', '').split("").reverse(); // Reversa el valor para facilitar la inserción de puntos
+            var newValue = '';
+            for (var i = 0; i < inputValue.length; i++) {
+                if (i % 3 == 0 && i!= 0) { // Agrega un punto cada tres dígitos, excepto al inicio
+                    newValue += '.';
+                }
+                newValue += inputValue[i];
+            }
+            inputElement.value = newValue.split("").reverse().join(""); // Revierte el valor y lo establece en el input
+        }
+      
+      </script>

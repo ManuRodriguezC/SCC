@@ -1,0 +1,14 @@
+{% load static %}
+
+{% block styles %}
+    <link href="{% static "css/dialog.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+<div class="dialog" id="dialog">
+    <h1>Simulacion Credito</h1>
+    <div>
+        <p>{{datas.name}}</p>
+        <p>{{datas.lastname}}</p>
+    </div>
+
+</div>

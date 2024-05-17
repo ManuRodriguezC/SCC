@@ -26,13 +26,18 @@
     </div>
 
     <div class="content">
-        <form action="">
+        <form action="" method="POST">
+            {% csrf_token %}
             {% include "personaldatas.html" %}
 
             {% include "types.html" %}
-            <button type="submit">Calcular</button>
+            <button class="calculate" type="submit">Calcular</button>
         </form>
     </div>
+
+    {% if datas.state %}
+        {% include "dialog.html" %}
+    {% endif %}
 {% endblock content %}
 
 

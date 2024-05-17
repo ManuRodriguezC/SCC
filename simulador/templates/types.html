@@ -3,38 +3,15 @@
 {% block styles %}
   <link href="{% static "css/credits.css" %}" rel="stylesheet">
 {% endblock styles %}
-
-
-<!-- <div id="flex-container" class="testimonials">
-  <div id="top-zone">
-    <ul class="list">
-      
-      <li class="item">
-        <input type="radio" id="radio_testimonial-1" name="basic_carousel" checked="checked" />
-        <label class="label_testimonial-1" for="radio_testimonial-1">Créditos Deuda / Aporte</label>
-        <div class="content-test content_testimonial-1">
-          {% include "types/deuda.html" %}
-        </div>
-      </li>
-      
-        <li class="item">
-          <input type="radio" id="radio_testimonial-2" name="basic_carousel" />
-          <label class="label_testimonial-2" for="radio_testimonial-2">Créditos Extracupo</label>
-          <div class="content-test content_testimonial-2">
-            {% include "types/extracupo.html" %}
-          </div>
-        </ul>
-      </div>
-      <div id="bottom-zone"></div>
-    </div> -->
     
-    <div class="content-types" id="flex-container">
+    <div id="flex-container">
+      <h2 class="title-2">2. Selecciona tu linea y tipo de credito</h2>
       <div class="options">
-        <p id="bt-type-1" class="bt-type">Creditos Deuda / Aporte</p>
+        <p id="bt-type-1" class="bt-type select">Creditos Deuda / Aporte</p>
         <p id="bt-type-2" class="bt-type">Creditos Extracupo</p>
       </div>
 
-        <div class="type-1" id="type-1">
+        <div class="type-1 visible-1" id="type-1">
           {% include "types/deuda.html" %}
         </div>
         <div class="type-2" id="type-2">
@@ -61,12 +38,27 @@
     t1 = document.getElementById('type-1')
     t2 = document.getElementById('type-2')
 
+    typecredit2 = document.getElementById('typecredit-2')
+    typecredit1 = document.getElementById('typecredit-1')
+    
+    monto1 = document.getElementById('monto-1')
+    monto2 = document.getElementById('monto-2')
+
+    cuotas1 = document.getElementById('cuotas-1')
+    cuotas2 = document.getElementById('cuotas-2')
+
     bt1.addEventListener('click', () => {
       if (!t1.classList.contains('visible-1')) {
         t1.classList.add('visible-1');
         t2.classList.remove('visible-2');
         bt1.classList.add('select')
         bt2.classList.remove('select')
+        typecredit1.required = true
+        monto1.required = true
+        cuotas1.required = true
+        typecredit2.required = false
+        monto2.required = false
+        cuotas2.required = false
       }
     })
     bt2.addEventListener('click', () => {
@@ -75,6 +67,12 @@
         t1.classList.remove('visible-1');
         bt1.classList.remove('select')
         bt2.classList.add('select')
+        typecredit2.required = true
+        monto2.required = true
+        cuotas2.required = true
+        typecredit1.required = false
+        monto1.required = false
+        cuotas1.required = false
       }
     })
   </script>

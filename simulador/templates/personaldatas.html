@@ -5,6 +5,7 @@
 {% endblock styles %}
 
 <div class="dates">
+    {% csrf_token %}
 
     <h3 class="title-datas">1. Ingresa tus datos personales y finacieros</h3>
     <p>
@@ -15,12 +16,11 @@
 
     <div class="personal-datas">
         <div class="wave-group">
-            <input required id="name" type="text" class="input">
+            <input required id="name" type="text" class="input" name="name">
             <span class="bar"></span>
             <label for="name" class="label">
               <span class="label-char" style="--index: 0">N</span>
               <span class="label-char" style="--index: 1">o</span>
-
               <span class="label-char" style="--index: 2">m</span>
               <span class="label-char" style="--index: 3">b</span>
               <span class="label-char" style="--index: 4">r</span>
@@ -29,7 +29,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="lastname" type="text" class="input">
+            <input required id="lastname" type="text" class="input" name="lastname">
             <span class="bar"></span>
             <label for="lastname" class="label">
               <span class="label-char" style="--index: 0">A</span>
@@ -44,7 +44,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="document" type="number" class="input">
+            <input required id="document" type="number" class="input" name="document">
             <span class="bar"></span>
             <label for="document" class="label">
               <span class="label-char" style="--index: 0">D</span>
@@ -60,7 +60,7 @@
           </div>
           
         <div class="wave-group">
-          <input required id="salario" type="text" class="input" oninput="handleChange('salario')">
+          <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')">
             <span class="bar"></span>
             <label for="salario" class="label">
               <span class="label-char" style="--index: 0">S</span>
@@ -74,7 +74,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="others" type="text" class="input" oninput="handleChange('others')">
+            <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')">
             <span class="bar"></span>
             <label for="others" class="label">
               <span class="label-char" style="--index: 0">O</span>
@@ -95,7 +95,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="debit" type="text" class="input"  oninput="handleChange('debit')">
+            <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')">
             <span class="bar"></span>
             <label for="debit" class="label">
               <span class="label-char" style="--index: 0">D</span>
@@ -109,7 +109,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="years" type="number" class="input">
+            <input required id="years" type="number" class="input" name="years">
             <span class="bar"></span>
             <label for="years" class="label">
               <span class="label-char" style="--index: 0">A</span>
@@ -131,7 +131,7 @@
           </div>
 
           <div class="wave-group">
-            <input required id="score" type="number" class="input">
+            <input required id="score" type="number" class="input" name="score">
             <span class="bar"></span>
             <label for="score" class="label">
               <span class="label-char" style="--index: 0">S</span>
