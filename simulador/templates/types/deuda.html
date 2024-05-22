@@ -11,18 +11,21 @@
         <select id="typecredit-1" name="typecredit" required>
             <option value="">-- Seleccione Credito --</option>
             {% for type in deudaaporte %}
-            <option value={{type.name}}>{{type.name}}</option>
+                {% if type.name == 'Libre Inversión' %}
+                    <option value={{type.plazoMin}}>{{type.name}} entre {{type.plazoMin}} y {{type.plazoMax}} cuotas</option>
+                {% else%}
+                    <option value={{type.name}}>{{type.name}}</option>
+                {% endif %}
             {% endfor %}
         </select>
 
+
         <div class="three">
             <h2 class="title-2">3. Ingresa el monto y plazo de tu credito.</h2>
-
-            <span>Puede haber datos aca!</span>
             
             <div class="personal-datas">
                 <div class="wave-group">
-                    <input required id="monto-1" type="text" class="input" name="monto" oninput="handleChange('monto')">
+                    <input required id="monto-1" type="text" class="input" name="monto" oninput="handleChange('monto-1')">
                     <span class="bar"></span>
                     <label for="monto" class="label">
                         <span class="label-char" style="--index: 0">M</span>

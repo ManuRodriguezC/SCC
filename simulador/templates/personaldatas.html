@@ -16,7 +16,11 @@
 
     <div class="personal-datas">
         <div class="wave-group">
-            <input required id="name" type="text" class="input" name="name">
+            {% if errors %}
+              <input required id="name" type="text" class="input" name="name" value={{datas.name}}>
+            {% else%}
+              <input required id="name" type="text" class="input" name="name">
+            {% endif %}
             <span class="bar"></span>
             <label for="name" class="label">
               <span class="label-char" style="--index: 0">N</span>
@@ -27,9 +31,16 @@
               <span class="label-char" style="--index: 5">e</span>
             </label>
           </div>
+          {% if errors.name %}
+            <span>El nombre debe tener mas de 10 caracteres.</span>
+          {% endif %}
 
           <div class="wave-group">
-            <input required id="lastname" type="text" class="input" name="lastname">
+            {% if errors %}
+              <input required id="lastname" type="text" class="input" name="lastname" value={{datas.lastname}}>
+            {% else%}
+              <input required id="lastname" type="text" class="input" name="lastname">
+            {% endif %}
             <span class="bar"></span>
             <label for="lastname" class="label">
               <span class="label-char" style="--index: 0">A</span>
@@ -44,7 +55,11 @@
           </div>
 
           <div class="wave-group">
-            <input required id="document" type="number" class="input" name="document">
+            {% if errors %}
+              <input required id="document" type="number" class="input" name="document" value={{datas.document}}>
+            {% else%}
+              <input required id="document" type="number" class="input" name="document">
+            {% endif %}
             <span class="bar"></span>
             <label for="document" class="label">
               <span class="label-char" style="--index: 0">D</span>
@@ -60,7 +75,11 @@
           </div>
           
         <div class="wave-group">
-          <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')">
+            {% if errors %}
+              <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')" value={{datas.salario}}>
+            {% else%}
+              <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')">
+            {% endif %}
             <span class="bar"></span>
             <label for="salario" class="label">
               <span class="label-char" style="--index: 0">S</span>
@@ -74,7 +93,11 @@
           </div>
 
           <div class="wave-group">
-            <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')">
+            {% if errors %}
+              <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')" value={{datas.others}}>
+            {% else%}
+              <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')">
+            {% endif %}
             <span class="bar"></span>
             <label for="others" class="label">
               <span class="label-char" style="--index: 0">O</span>
@@ -95,7 +118,11 @@
           </div>
 
           <div class="wave-group">
-            <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')">
+            {% if errors %}
+              <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')" value={{datas.debit}}>
+            {% else%}
+              <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')">
+            {% endif %}
             <span class="bar"></span>
             <label for="debit" class="label">
               <span class="label-char" style="--index: 0">D</span>
@@ -109,7 +136,11 @@
           </div>
 
           <div class="wave-group">
-            <input required id="years" type="number" class="input" name="years">
+            {% if errors %}
+              <input required id="years" type="number" class="input" name="years" value={{datas.years}}>
+            {% else%}
+              <input required id="years" type="number" class="input" name="years">
+            {% endif %}
             <span class="bar"></span>
             <label for="years" class="label">
               <span class="label-char" style="--index: 0">A</span>
@@ -131,7 +162,11 @@
           </div>
 
           <div class="wave-group">
-            <input required id="score" type="number" class="input" name="score">
+            {% if errors %}
+              <input required id="score" type="number" class="input" name="score" value={{datas.score}}>
+            {% else%}
+              <input required id="score" type="number" class="input" name="score">
+            {% endif %}
             <span class="bar"></span>
             <label for="score" class="label">
               <span class="label-char" style="--index: 0">S</span>

@@ -27,8 +27,21 @@ class DeudaAporte(models.Model):
     """"""
     name = models.CharField(max_length=100)
     tasa = models.FloatField()
+    montoMax = models.IntegerField()
+    plazoMin = models.IntegerField()
+    plazoMax = models.IntegerField()
+    garantia = models.CharField(max_length=500)
+    requisitos = models.CharField(max_length=500)
+    
+    def __str__(self):
+        return f"{self.name} entre {self.plazoMin} y {self.plazoMax} cuotas"
+
 
 class Extracupo(models.Model):
     """"""
     name = models.CharField(max_length=100)
     tasa = models.FloatField()
+    montoMax = models.IntegerField()
+    plazoPax = models.IntegerField()
+    garantia = models.CharField(max_length=500)
+    requisitos = models.CharField(max_length=500)
