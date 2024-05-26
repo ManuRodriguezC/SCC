@@ -1,5 +1,6 @@
 {% load static %}
 
+
 {% block styles %}
     <link href="{% static "css/deuda.css" %}" rel="stylesheet">
 {% endblock styles %}
@@ -8,10 +9,11 @@
     <p class="complement">Tenemos diferentes tipos de creditos, selecciona la opciones que mas se ajuste a tu interes.</p>
 
     <div id="form-values" class="form-values">
-        <select id="typecredit-2" name="typecredit">
+        {% csrf_token %}
+        <select id="typecredit2" name="typecredit2">
             <option value="">-- Seleccione Credito --</option>
             {% for type in extracupo %}
-            <option value={{type.name}}>{{type.name}}</option>
+                <option value={{type.name}}>{{type.name}}</option>
             {% endfor %}
         </select>
 
@@ -20,7 +22,7 @@
 
             <div class="personal-datas">
                 <div class="wave-group">
-                    <input id="monto-2" type="text" class="input" name="monto" oninput="handleChange('monto-2')">
+                    <input id="monto2" type="text" class="input" name="monto2" oninput="handleChange('monto2')">
                     <span class="bar"></span>
                     <label for="monto" class="label">
                         <span class="label-char" style="--index: 0">M</span>
@@ -31,7 +33,7 @@
                     </label>
                 </div>
                 <div class="wave-group">
-                    <input id="cuotas-2" type="number" class="input" name="cuotas">
+                    <input id="cuotas2" type="number" class="input" name="cuotas2">
                     <span class="bar"></span>
                     <label for="cuotas" class="label">
                         <span class="label-char" style="--index: 0">C</span>

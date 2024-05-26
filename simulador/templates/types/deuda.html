@@ -1,5 +1,6 @@
 {% load static %}
 
+
 {% block styles %}
     <link href="{% static "css/deuda.css" %}" rel="stylesheet">
 {% endblock styles %}
@@ -8,15 +9,17 @@
     <p class="complement">Tenemos diferentes tipos de creditos, selecciona la opciones que mas se ajuste a tu interes.</p>
 
     <div id="form-values" class="form-values">
-        <select id="typecredit-1" name="typecredit" required>
+        {% csrf_token %}
+        <select id="typecredit1" name="typecredit1" required>
             <option value="">-- Seleccione Credito --</option>
             {% for type in deudaaporte %}
-                {% if type.name == 'Libre Inversión' %}
-                    <option value={{type.plazoMin}}>{{type.name}} entre {{type.plazoMin}} y {{type.plazoMax}} cuotas</option>
-                {% else%}
-                    <option value={{type.name}}>{{type.name}}</option>
+                {% if type.name == 'Libre Inversión 1' or type.name == 'Libre Inversión 2' or type.name == 'Libre Inversión 3' %}
+                    <option value="{{type.name}}">{{type.name}} entre {{type.plazoMin}} y {{type.plazoMax}} cuotas</option>
+                {% else %}
+                    <option value="{{type.name}}">{{type.name}}</option>
                 {% endif %}
             {% endfor %}
+        
         </select>
 
 
@@ -25,7 +28,7 @@
             
             <div class="personal-datas">
                 <div class="wave-group">
-                    <input required id="monto-1" type="text" class="input" name="monto" oninput="handleChange('monto-1')">
+                    <input required id="monto1" type="text" class="input" name="monto1" oninput="handleChange('monto1')">
                     <span class="bar"></span>
                     <label for="monto" class="label">
                         <span class="label-char" style="--index: 0">M</span>
@@ -36,7 +39,7 @@
                     </label>
                 </div>
                 <div class="wave-group">
-                    <input required id="cuotas-1" type="number" class="input" name="cuotas">
+                    <input required id="cuotas1" type="number" class="input" name="cuotas1">
                     <span class="bar"></span>
                     <label for="cuotas" class="label">
                         <span class="label-char" style="--index: 0">C</span>

@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 {% block styles %}
     <link href="{% static "css/personal.css" %}" rel="stylesheet">
 {% endblock styles %}
@@ -16,11 +18,13 @@
 
     <div class="personal-datas">
         <div class="wave-group">
-            {% if errors %}
-              <input required id="name" type="text" class="input" name="name" value={{datas.name}}>
-            {% else%}
-              <input required id="name" type="text" class="input" name="name">
+            {% if form_data %}
+                <input required id="name" type="text" class="input" name="name" value="{{ form_data.name}}">
+            {% else %}
+                <input required id="name" type="text" class="input" name="name">
             {% endif %}
+
+          
             <span class="bar"></span>
             <label for="name" class="label">
               <span class="label-char" style="--index: 0">N</span>
@@ -31,13 +35,12 @@
               <span class="label-char" style="--index: 5">e</span>
             </label>
           </div>
-          {% if errors.name %}
-            <span>El nombre debe tener mas de 10 caracteres.</span>
-          {% endif %}
+
+
 
           <div class="wave-group">
-            {% if errors %}
-              <input required id="lastname" type="text" class="input" name="lastname" value={{datas.lastname}}>
+            {% if form_data %}
+              <input required id="lastname" type="text" class="input" name="lastname" value="{{ form_data.lastname }}">
             {% else%}
               <input required id="lastname" type="text" class="input" name="lastname">
             {% endif %}
@@ -55,8 +58,8 @@
           </div>
 
           <div class="wave-group">
-            {% if errors %}
-              <input required id="document" type="number" class="input" name="document" value={{datas.document}}>
+            {% if form_data %}
+              <input required id="document" type="number" class="input" name="document" value="{{form_data.document}}">
             {% else%}
               <input required id="document" type="number" class="input" name="document">
             {% endif %}
@@ -75,8 +78,8 @@
           </div>
           
         <div class="wave-group">
-            {% if errors %}
-              <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')" value={{datas.salario}}>
+            {% if form_data %}
+              <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')" value="{{form_data.salario}}">
             {% else%}
               <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')">
             {% endif %}
@@ -93,8 +96,8 @@
           </div>
 
           <div class="wave-group">
-            {% if errors %}
-              <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')" value={{datas.others}}>
+            {% if form_data %}
+              <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')" value="{{form_data.others}}">
             {% else%}
               <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')">
             {% endif %}
@@ -118,8 +121,8 @@
           </div>
 
           <div class="wave-group">
-            {% if errors %}
-              <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')" value={{datas.debit}}>
+            {% if form_data %}
+              <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')" value="{{form_data.debit}}">
             {% else%}
               <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')">
             {% endif %}
@@ -135,9 +138,9 @@
             </label>
           </div>
 
-          <div class="wave-group">
+          {% comment %} <div class="wave-group">
             {% if errors %}
-              <input required id="years" type="number" class="input" name="years" value={{datas.years}}>
+              <input required id="years" type="number" class="input" name="years" value="{{form_data.years}}">
             {% else%}
               <input required id="years" type="number" class="input" name="years">
             {% endif %}
@@ -159,11 +162,11 @@
               <span class="label-char" style="--index: 13">ó</span>
               <span class="label-char" style="--index: 14">n</span>
             </label>
-          </div>
+          </div> {% endcomment %}
 
-          <div class="wave-group">
+          {% comment %} <div class="wave-group">
             {% if errors %}
-              <input required id="score" type="number" class="input" name="score" value={{datas.score}}>
+              <input required id="score" type="number" class="input" name="score" value="{{form_data.score}}">
             {% else%}
               <input required id="score" type="number" class="input" name="score">
             {% endif %}
@@ -175,8 +178,15 @@
               <span class="label-char" style="--index: 3">r</span>
               <span class="label-char" style="--index: 4">e</span>
             </label>
-          </div>
+          </div> {% endcomment %}
     </div>
+    {% if messages %}
+      <div class="alert alert-danger" id="alert">
+          {% for message in messages %}
+              <p>{{ message }}</p>
+          {% endfor %}
+      </div>
+    {% endif %}
 </div>
 
 <script>
@@ -193,5 +203,10 @@
       }
       inputElement.value = newValue.split("").reverse().join(""); // Revierte el valor y lo establece en el input
   }
+
+  window.addEventListener('load', function() {
+    document.getElementById('alert').scrollIntoView({behavior: 'smooth'});
+});
+
 
 </script>

@@ -1,5 +1,6 @@
 {% load static %}
 
+
 {% block styles %}
   <link href="{% static "css/credits.css" %}" rel="stylesheet">
 {% endblock styles %}
@@ -38,14 +39,14 @@
     t1 = document.getElementById('type-1')
     t2 = document.getElementById('type-2')
 
-    typecredit2 = document.getElementById('typecredit-2')
-    typecredit1 = document.getElementById('typecredit-1')
+    typecredit2 = document.getElementById('typecredit2')
+    typecredit1 = document.getElementById('typecredit1')
     
-    monto1 = document.getElementById('monto-1')
-    monto2 = document.getElementById('monto-2')
+    monto1 = document.getElementById('monto1')
+    monto2 = document.getElementById('monto2')
 
-    cuotas1 = document.getElementById('cuotas-1')
-    cuotas2 = document.getElementById('cuotas-2')
+    cuotas1 = document.getElementById('cuotas1')
+    cuotas2 = document.getElementById('cuotas2')
 
     bt1.addEventListener('click', () => {
       if (!t1.classList.contains('visible-1')) {

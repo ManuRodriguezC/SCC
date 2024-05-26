@@ -25,13 +25,13 @@ class User(models.Model):
 
 class DeudaAporte(models.Model):
     """"""
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     tasa = models.FloatField()
     montoMax = models.IntegerField()
     plazoMin = models.IntegerField()
     plazoMax = models.IntegerField()
-    garantia = models.CharField(max_length=500)
-    requisitos = models.CharField(max_length=500)
+    garantia = models.TextField(max_length=500)
+    requisitos = models.TextField(max_length=500)
     
     def __str__(self):
         return f"{self.name} entre {self.plazoMin} y {self.plazoMax} cuotas"
@@ -42,6 +42,23 @@ class Extracupo(models.Model):
     name = models.CharField(max_length=100)
     tasa = models.FloatField()
     montoMax = models.IntegerField()
-    plazoPax = models.IntegerField()
+    plazoMin = models.IntegerField()
+    plazoMax = models.IntegerField()
     garantia = models.CharField(max_length=500)
     requisitos = models.CharField(max_length=500)
+    
+class Simulation(models.Model):
+    name =models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    document = models.CharField(max_length=100)
+    salary = models.CharField(max_length=100)
+    others = models.CharField(max_length=100)
+    debit = models.CharField(max_length=100)
+    typeCredit = models.CharField(max_length=100)
+    value = models.CharField(max_length=100)
+    cuotas = models.CharField(max_length=100)
+
+class Salary(models.Model):
+    """"""
+    name = models.CharField(max_length=100)
+    value = models.CharField(max_length=100)
