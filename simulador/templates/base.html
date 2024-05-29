@@ -20,10 +20,37 @@
                 <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
             </picture>
             <h2 class="title">Simulador Crédito</h2>
+
         </header>
-        <div class="mix"></div>
+        <div class="mix">
+            <nav class="links">
+                <ul>
+                    <li><a href="{% url 'simulador'%}">Simulador</a></li>
+                    <li><a href="{% url 'deudaaporte'%}">Deuda / Aporte</a></li>
+                    <li><a href="{% url 'extracupos' %}">Extracupo</a></li>
+                    <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+
 
         {% block content %}{% endblock content %}
+
+        <footer>
+            <div>
+                <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
+            </div>
+            <div>
+                <h1>Cootratiempo</h1>
+                <p class="copy">© Cooperativa Cootratiempo 2024</p>
+            </div>
+            <div class="info-footer">
+                <p>Calle 35 # 14 - 12 Teusaquillo</p>
+                <p>Tel: 601 7454745</p>
+                <p>Bogotá - Colombia</p>
+            </div>
+        </footer>
 
         <script src="{% static 'js/script.js' %}" async defer></script>
     </body>

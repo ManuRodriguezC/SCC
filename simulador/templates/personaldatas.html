@@ -16,7 +16,7 @@
         estos seran validados a la hora de solicitar el credito.
     </p>
 
-    <div class="personal-datas">
+    <div class="personal-datas" id="alert">
         <div class="wave-group">
             {% if form_data %}
                 <input required id="name" type="text" class="input" name="name" value="{{ form_data.name}}">
@@ -181,7 +181,7 @@
           </div> {% endcomment %}
     </div>
     {% if messages %}
-      <div class="alert alert-danger" id="alert">
+      <div class="alert">
           {% for message in messages %}
               <p>{{ message }}</p>
           {% endfor %}

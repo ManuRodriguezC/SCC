@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, DeudaAporteForm
-from .models import DeudaAporte, Extracupo
+from django.contrib.auth.decorators import login_required
+from .forms import DeudaAporteForm, ExtracupoForm, SalaryForm
+from .models import DeudaAporte, Extracupo, Salary
 from django.contrib import messages
 
 def simulador(request):
@@ -8,10 +9,6 @@ def simulador(request):
     extracupo = Extracupo.objects.all()
 
     if request.method == 'POST':
-        # if DeudaAporte.objects.filter(plazoMin=request.POST.get('typecredit')).exists():
-        #     creditType = DeudaAporte.objects.filter(plazoMin=request.POST.get('typecredit'))
-        # else:
-        #     creditType = Extracupo.objects.filter(plazoMin=request.POST.get('typecredit'))
         data = {
             'name' : request.POST.get('name'),
             'lastname': request.POST.get('lastname'),
@@ -25,9 +22,10 @@ def simulador(request):
         monto = request.POST.get('monto1') if request.POST.get('monto1') else request.POST.get('monto2')
         cuotas = request.POST.get('cuotas1') if request.POST.get('cuotas1') else request.POST.get('cuotas2')
         
-        objectType = DeudaAporte.objects.get(name=typeCredit) if DeudaAporte.objects.get(name=typeCredit) else Extracupo.objects.get(name=typeCredit)
-        
-        print(objectType)
+        if DeudaAporte.objects.filter(name=typeCredit).exists():
+            currentType = DeudaAporte.objects.get(name=typeCredit)
+        else:
+            currentType = Extracupo.objects.get(name=typeCredit)
                 
         request.session['form_data'] = data
         
@@ -50,7 +48,7 @@ def simulador(request):
         'form_data': form_data  # Agrega esto
     })
 
-
+@login_required
 def deudaAporte(request):
     deudaAportes = DeudaAporte.objects.all()
     if request.method == 'POST':
@@ -63,7 +61,8 @@ def deudaAporte(request):
     return render(request, 'deudaaporte/deudaaportes.html',
                   {'deudaaportes': deudaAportes,
                    'form': form})
-    
+
+@login_required
 def update_deudaaporte(request, id):
     deudaaporte = get_object_or_404(DeudaAporte, id=id)
 
@@ -77,11 +76,52 @@ def update_deudaaporte(request, id):
 
     return render(request, 'deudaaporte/updatedeudaaporte.html', {'form': form})
 
+@login_required
 def delete_deudaaporte(request, id):
     """"""
     deudaaporte = get_object_or_404(DeudaAporte, id=id)
     deudaaporte.delete()
     return redirect('/deudaaporte')
-    
 
+@login_required
+def extracupo(request):
+    extracupos = Extracupo.objects.all()
+    if request.method == 'POST':
+        form = ExtracupoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/extracupos')
+    else:
+        form = ExtracupoForm()
+    return render(request, 'extracupo/extracupos.html',
+                  {'extracupos': extracupos,
+                   'form': form})
+
+@login_required
+def update_extracupo(request, id):
+    extracupo = get_object_or_404(Extracupo, id=id)
+    
+    if request.method == 'POST':
+        form = ExtracupoForm(request.POST, instance=extracupo)
+        if form.is_valid():
+            form.save()
+            return redirect('/extracupos')
+    else:
+        form = ExtracupoForm(instance=extracupo)
+    
+    return render(request, 'extracupo/updateextracupo.html', {'form': form})
+
+@login_required
+def delete_extracupo(request, id):
+    extracupo = get_object_or_404(Extracupo, id=id)
+    extracupo.delete()
+    return redirect('/extracupos')
+
+def salary(request):
+    currentSalary = Salary.objects.all()
+    if request.method == 'POST':
+        form = SalaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return
     

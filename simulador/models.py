@@ -39,13 +39,16 @@ class DeudaAporte(models.Model):
 
 class Extracupo(models.Model):
     """"""
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     tasa = models.FloatField()
     montoMax = models.IntegerField()
     plazoMin = models.IntegerField()
     plazoMax = models.IntegerField()
-    garantia = models.CharField(max_length=500)
-    requisitos = models.CharField(max_length=500)
+    garantia = models.TextField(max_length=2000)
+    requisitos = models.TextField(max_length=2000)
+    
+    def __str__(self):
+        return f"{self.name}"
     
 class Simulation(models.Model):
     name =models.CharField(max_length=100)

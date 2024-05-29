@@ -101,10 +101,31 @@
     width: 50%;
 }
 
+.alert {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert p {
+    font-size: 30px;
+    background-color: red;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: #fff;
+}
+
 /* Datos Financieros */
 
 @media (max-width: 600px) {
     .title-datas {
         font-size: 30px;
+    }
+}
+
+@media (max-width: 400px) {
+    .title-datas {
+        font-size: 25px;
     }
 }
