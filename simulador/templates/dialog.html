@@ -1,25 +1,31 @@
+{% extends "simulador.html" %}
+
 {% load static %}
 
 
 {% block styles %}
     <link href="{% static "css/dialog.css" %}" rel="stylesheet">
+    <link href="{% static "css/simulador.css" %}" rel="stylesheet">
 {% endblock styles %}
 
-<div class="dialog" id="dialog">
-    <h1>Simulacion Credito</h1>
-    <div>
-        <p>{{datas.name}}</p>
-        <p>{{datas.lastname}}</p>
-        <p>{{datas.document}}</p>
-        <p>{{datas.salario}}</p>
-        <p>{{datas.others}}</p>
-        <p>{{datas.debit}}</p>
-        <p>{{datas.years}}</p>
-        <p>{{datas.score}}</p>
-        <p>{{datas.typecredit}}</p>
-        <p>{{datas.monto}}</p>
-        <p>{{datas.cuotas}}</p>
-        <button>Cerrar</button>
-    </div>
+{% block simulacion %}
 
-</div>
+    <div class="dialog" id="dialog">
+        <h1>Simulacion Credito</h1>
+        <div>
+            <p>{{datas.state}}</p>
+            {% comment %} <p>{{datas.lastname}}</p>
+            <p>{{datas.document}}</p>
+            <p>{{datas.salario}}</p>
+            <p>{{datas.others}}</p>
+            <p>{{datas.debit}}</p>
+            <p>{{datas.years}}</p>
+            <p>{{datas.score}}</p>
+            <p>{{datas.typecredit}}</p>
+            <p>{{datas.monto}}</p>
+            <p>{{datas.cuotas}}</p> {% endcomment %}
+            <a href="{% url 'simulador'%}">Cerrar</a>
+        </div>
+
+    </div>
+{% endblock %}

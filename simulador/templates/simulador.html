@@ -36,9 +36,10 @@
         </form>
     </div>
 
-    {% if datas.state == True %}
-        {% include "dialog.html" %}
-    {% endif %}
+    {% block simulacion %}
+    
+    {% endblock simulacion %}
+
 {% endblock content %}
 
 

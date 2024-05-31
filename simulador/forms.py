@@ -39,6 +39,7 @@ class DeudaAporteForm(forms.ModelForm):
 
 class SalaryForm(forms.ModelForm):
     """"""
+    value = forms.CharField(widget=forms.TextInput(attrs={'oninput': "handleChange('id_value')"}))
     class Meta:
         model = Salary
         fields = ['name', 'value']

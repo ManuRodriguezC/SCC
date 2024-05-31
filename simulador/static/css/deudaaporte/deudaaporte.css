@@ -27,10 +27,13 @@
 
 article {
     max-width: 350px;
+    min-height: 100px;
     background-color: rgb(7 16 45);
     background: linear-gradient(to top right, rgb(7 16 45), var(--blue));
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative;
     padding: 20px;
     border-radius: 20px;

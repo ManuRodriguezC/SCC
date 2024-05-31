@@ -1,0 +1,38 @@
+<div class="content-form">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form">
+            {{form.as_p}}
+        </div>
+        <button class="save" type="submit">
+            <svg
+            aria-hidden="true"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            ></path>
+          </svg>Guardar</button>
+    </form>
+</div>
+<script>
+  function handleChange(idName) {
+      var inputElement = document.getElementById(idName);
+      inputElement.value = inputElement.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+      var inputValue = inputElement.value.replace('.', '').split("").reverse(); // Reversa el valor para facilitar la inserción de puntos
+      var newValue = '';
+      for (var i = 0; i < inputValue.length; i++) {
+          if (i % 3 == 0 && i!= 0) { // Agrega un punto cada tres dígitos, excepto al inicio
+              newValue += '.';
+          }
+          newValue += inputValue[i];
+      }
+      inputElement.value = newValue.split("").reverse().join(""); // Revierte el valor y lo establece en el input
+  }
+</script>
