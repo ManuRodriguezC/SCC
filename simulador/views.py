@@ -4,6 +4,7 @@ from .forms import DeudaAporteForm, ExtracupoForm, SalaryForm
 from .models import DeudaAporte, Extracupo, Salary
 from django.contrib import messages
 from .controlErros import controls
+from .pagoMensual import pagoMensual
 
 def simulador(request):
     deudaAporte = DeudaAporte.objects.all()
@@ -32,29 +33,52 @@ def simulador(request):
 
         request.session['form_data'] = data
         
-        datasComplete = data
-        datasComplete['type'] = typeCredit
-        datasComplete['monto'] = monto
-        datasComplete['cuotas'] = cuotas
-        datasComplete['creditType'] = currentType
-        datasComplete['currentSalary'] = currentSalari
+        montoMaximoCredit = int(currentSalari.replace(".", "")) * currentType.montoMax
         
-        newValues = controls(datasComplete)
-        print(newValues['error'])
-        if newValues['error'] == True:
-            messages.error(request, newValues['mensaje'])
-            return redirect('/')
-        print(newValues)
+        ingresosSalario = int(data['salario'].replace(".", ""))
+        seguridadSocial = (ingresosSalario * 8) / 100
+        ingresosOtros = int(data['others'].replace(".", ""))
+        egresos = int(data['debit'].replace(".", ""))
+        ingresosTotales = ingresosSalario + ingresosOtros
         
-        if len(data['name']) < 5:
-            messages.error(request, "El nombre debe ser mayor a 5 caracteres")
+        capacidadPago = int(((ingresosTotales * 30) / 100) - egresos)
+        
+        montoMensual = pagoMensual(monto, currentType.tasa, cuotas)
+        
+        montoMax = int((int(monto.replace(".", "")) * capacidadPago) / montoMensual)
+        
+        #Control de cuotas minimas y maximas
+        if int(cuotas) > int(currentType.plazoMax) or int(cuotas) < int(currentType.plazoMin):
+            messages.error(request, f"El plazo mínimo de cuotas es {currentType.plazoMin} y máximo de {currentType.plazoMax}")
             return redirect('/')
-        if len(data['lastname']) < 8:
-            messages.error(request, "El apellido debe ser mayor a 5 caracteres")
+
+        # Control de monto maximo segun capacidad de pago
+        if int(monto.replace(".", "")) > montoMax:
+            if montoMax < 0:
+                messages.error(request, f"Su capacidad de pago no aplica para solicitar un crédito.")
+            else:
+                messages.error(request, f"El monto máximo según la capacidad de pago es de $ {montoMax}")
+            return redirect('/')
+        
+        # Control de monto maximo
+        if int(monto.replace(".", "")) > montoMaximoCredit:
+            messages.error(request, f"El monto máximo a solicitar es de $ {montoMaximoCredit}")
             return redirect('/')
         
         datas = {
-            'state': 'Verdad'
+            'data': data,
+            'type': typeCredit,
+            'monto': monto,
+            'cuotas': cuotas,
+            'tasaAnual': currentType.tasa,
+            'tasaMensual': round(currentType.tasa / 12, 2),
+            'garantias': currentType.garantia,
+            'requisitos': currentType.requisitos,
+            'seguridad': int(seguridadSocial),
+            'totales': int(ingresosTotales),
+            'cuota': montoMensual,
+            'capacidad': capacidadPago,
+            'montomaximo': montoMax
         }
         del request.session['form_data']
         request.session['calculos'] = {'datas': datas}

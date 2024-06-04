@@ -118,15 +118,15 @@ form {
     outline: 2px solid #3255a0;
     margin-bottom: 40px;
   }
-  
-  .calculate:hover {
+
+.calculate:hover {
     color: #ffffff;
     transform: scale(1.1);
     outline: 2px solid #3255a0;
     box-shadow: 4px 5px 17px -4px #3255a0;
-  }
+}
   
-  .calculate::before {
+.calculate::before {
     content: "";
     position: absolute;
     left: -50px;
@@ -137,11 +137,11 @@ form {
     transform: skewX(45deg);
     z-index: -1;
     transition: width 1000ms;
-  }
+}
   
-  .calculate:hover::before {
+.calculate:hover::before {
     width: 250%;
-  }
+}
   
   
 @media (max-width:1200px) {

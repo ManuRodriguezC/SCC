@@ -11,21 +11,107 @@
 {% block simulacion %}
 
     <div class="dialog" id="dialog">
-        <h1>Simulacion Credito</h1>
-        <div>
-            <p>{{datas.state}}</p>
-            {% comment %} <p>{{datas.lastname}}</p>
-            <p>{{datas.document}}</p>
-            <p>{{datas.salario}}</p>
-            <p>{{datas.others}}</p>
-            <p>{{datas.debit}}</p>
-            <p>{{datas.years}}</p>
-            <p>{{datas.score}}</p>
-            <p>{{datas.typecredit}}</p>
-            <p>{{datas.monto}}</p>
-            <p>{{datas.cuotas}}</p> {% endcomment %}
-            <a href="{% url 'simulador'%}">Cerrar</a>
+        <h4>Datos Personales</h4>
+        <div class="data">
+            <div>
+                <p>Nombre</p>
+                <p>{{datas.data.name}}</p>
+            </div>
+            <div>
+                <p>Apellido</p>
+                <p>{{datas.data.lastname}}</p>
+            </div>
+            <div>
+                <p>Documento</p>
+                <p>{{datas.data.document}}</p>
+            </div>
+            <div>
+                <p>Salario</p>
+                <p>$ {{datas.data.salario}}</p>
+            </div>
+            <div>
+                <p>Otros Ingresos</p>
+                <p>$ {{datas.data.others}}</p>
+            </div>
+            <div>
+                <p>Debitos</p>
+                <p>$ {{datas.data.debit}}</p>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <h4>Datos de Solicitud</h4>
+        <div class="data">
+            <div>
+                <p>Crédito</p>
+                <p>{{datas.type}}</p>
+            </div>
+            <div>
+                <p>Monto a Solicitar</p>
+                <p>{{datas.monto}}</p>
+            </div>
+            <div>
+                <p>Cuotas</p>
+                <p>{{datas.cuotas}}</p>
+            </div>
+            <div>
+                <p>Tasa NA</p>
+                <p>{{datas.tasaAnual}}</p>
+            </div>
+            <div>
+                <p>Tasa NM</p>
+                <p>{{datas.tasaMensual}}</p>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <h4>Datos de Simulacion</h4>
+        <div class="data">
+            <div>
+                <p>Aporte Seguridad Social</p>
+                <p>$ <span id="values">{{datas.seguridad}}</span></p>
+            </div>
+            <div>
+                <p>Ingresos totales</p>
+                <p>$ <span id="values">{{datas.totales}}</span></p>
+            </div>
+            <div>
+                <p>Cuota a pagar</p>
+                <p>$ <span id="values">{{datas.cuota}}</span></p>
+            </div>
+            <div>
+                <p>Descuento máximo</p>
+                <p>$ <span id="values">{{datas.capacidad}}</span></p>
+            </div>
+            <div>
+                <p>Monto máximo a solicitar</p>
+                <p>$ <span id="values">{{datas.montomaximo}}</span></p>
+            </div>
         </div>
 
+        <div class="info-simulation">
+            <div>
+                <p>Garantias</p>
+                <p>{{datas.garantias}}</p>
+            </div>            <div>
+                <p>Requisitos</p>
+                <p>{{datas.requisitos}}</p>
+            </div>
+        </div>
+        
+        <a class="close" href="{% url 'simulador'%}">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="30"  height="30"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" /><path d="M9 9l6 6m0 -6l-6 6" /></svg>
+        </a>
+
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var montos = document.querySelectorAll('#values');
+            montos.forEach(function(monto) {
+                if (monto.textContent!== '') {
+                    var num = parseFloat(monto.textContent.replace(/,/g, ''));
+                    monto.textContent = num.toLocaleString();
+                }
+            });
+        });
+</script>
 {% endblock %}

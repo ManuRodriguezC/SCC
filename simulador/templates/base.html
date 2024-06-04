@@ -16,22 +16,23 @@
     </head>
     <body>
         <header>
-            <picture>
-                <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
-            </picture>
-            <h2 class="title">Simulador Crédito</h2>
-
+                <picture>
+                    <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
+                </picture>
+                <h2 class="title">Simulador Crédito</h2>
         </header>
         <div class="mix">
-            <nav class="links">
-                <ul>
-                    <li><a href="{% url 'simulador'%}">Simulador</a></li>
-                    <li><a href="{% url 'deudaaporte'%}">Deuda / Aporte</a></li>
-                    <li><a href="{% url 'extracupos' %}">Extracupo</a></li>
-                    <li><a href="{% url 'salario' %}">Salario</a></li>
-                    <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
-                </ul>
-            </nav>
+            {% if request.user.is_authenticated %}
+                <nav class="links">
+                    <ul>
+                        <li><a href="{% url 'simulador'%}">Simulador</a></li>
+                        <li><a href="{% url 'deudaaporte'%}">Deuda / Aporte</a></li>
+                        <li><a href="{% url 'extracupos' %}">Extracupo</a></li>
+                        <li><a href="{% url 'salario' %}">Salario</a></li>
+                        <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                    </ul>
+                </nav>
+            {% endif %}
         </div>
         
 

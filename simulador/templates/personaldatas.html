@@ -8,6 +8,13 @@
 
 <div class="dates">
     {% csrf_token %}
+    {% if messages %}
+      <div class="alert">
+          {% for message in messages %}
+              <p>{{ message }}</p>
+          {% endfor %}
+      </div>
+    {% endif %}
 
     <h3 class="title-datas">1. Ingresa tus datos personales y finacieros</h3>
     <p>
@@ -33,6 +40,7 @@
               <span class="label-char" style="--index: 3">b</span>
               <span class="label-char" style="--index: 4">r</span>
               <span class="label-char" style="--index: 5">e</span>
+              <span class="label-char" style="--index: 6">s</span>
             </label>
           </div>
 
@@ -54,6 +62,7 @@
               <span class="label-char" style="--index: 5">i</span>
               <span class="label-char" style="--index: 6">d</span>
               <span class="label-char" style="--index: 7">o</span>
+              <span class="label-char" style="--index: 8">s</span>
             </label>
           </div>
 
@@ -180,13 +189,7 @@
             </label>
           </div> {% endcomment %}
     </div>
-    {% if messages %}
-      <div class="alert">
-          {% for message in messages %}
-              <p>{{ message }}</p>
-          {% endfor %}
-      </div>
-    {% endif %}
+
 </div>
 
 <script>
