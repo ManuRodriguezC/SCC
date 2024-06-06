@@ -12,5 +12,6 @@ urlpatterns = [
     path('deleteextracupo/<int:id>/', views.delete_extracupo, name="extracupo_delete"),
     path('salario/', views.salary, name="salario"),
     path('salario/<int:id>/update/', views.updateSalary, name="salario_update"),
-    path('deletesalario/<int:id>/', views.delete_salario, name="salario_delete")
+    path('deletesalario/<int:id>/', views.delete_salario, name="salario_delete"),
+    path('downloadSimulation', views.generatePdf, name="download")
 ]

@@ -25,6 +25,12 @@
   color: #3255A0;
 }
 
+.second-text {
+  color: #3255A0;
+  text-align: center;
+  font-weight: 100;
+}
+
 .form {
   margin-top: 20px;
 }
@@ -100,4 +106,40 @@
   margin-top: 15px;
   color: #0099ff;
   font-size: 9px;
+}
+
+.container-2 {
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(0deg, rgb(238, 238, 238) 0%, rgb(244, 247, 251) 100%);
+  border-radius: 40px;
+  padding: 25px 35px;
+  border: 5px solid rgb(255, 255, 255);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+  margin: 20px;
+}
+
+.login {
+  text-decoration: none;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(45deg, rgb(16, 137, 211) 0%, #3255A0 100%);
+  color: white;
+  padding-block: 15px;
+  margin: 20px auto;
+  border-radius: 20px;
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.login:hover {
+  transform: scale(1.03);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+}
+
+.login:active {
+  transform: scale(0.95);
+  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
 }

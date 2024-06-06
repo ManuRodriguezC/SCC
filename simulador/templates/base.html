@@ -25,11 +25,11 @@
             {% if request.user.is_authenticated %}
                 <nav class="links">
                     <ul>
-                        <li><a href="{% url 'simulador'%}">Simulador</a></li>
-                        <li><a href="{% url 'deudaaporte'%}">Deuda / Aporte</a></li>
-                        <li><a href="{% url 'extracupos' %}">Extracupo</a></li>
-                        <li><a href="{% url 'salario' %}">Salario</a></li>
-                        <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+                        <li><a class="link" href="{% url 'simulador'%}">Simulador</a></li>
+                        <li><a class="link" href="{% url 'deudaaporte'%}">Deuda / Aporte</a></li>
+                        <li><a class="link" href="{% url 'extracupos' %}">Extracupo</a></li>
+                        <li><a class="link" href="{% url 'salario' %}">Salario</a></li>
+                        <li><a class="link" href="{% url 'logout' %}">Cerrar Sesion</a></li>
                     </ul>
                 </nav>
             {% endif %}
@@ -56,5 +56,5 @@
 
         <script src="{% static 'js/script.js' %}" async defer></script>
     </body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </html>

@@ -2,21 +2,22 @@
 
 {% block styles %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/logout.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"/>
 {% endblock styles %}
 
 {% block title %}Cerrar Sesion{% endblock %}
 
 {% block content %}
-    <div class="back"></div>
-    <div class="square-1"></div>
-    <div class="square-2"></div>
-    <div class="logout">
-        <h1>Sesion Finalizada</h1>
-        <h3>Esperamos tenerte pronto de vuelta, gracias por visitarnos!</h3>
-        <p>
+<div class="cont">
+
+    <div class="container-2">
+        <h1 class="heading">Sesion Finalizada</h1>
+        <h3 class="second-text">Esperamos tenerte pronto de vuelta, gracias por visitarnos!</h3>
+        <p class="second-text">
             Si quieres inciar sesion de nuevo da click en el siguiente boton. 
         </p>
-        <a class="bt-logout" href="{% url "login" %}">Iniciar Sesión</a>
+        <a class="login" href="{% url "login" %}">Iniciar Sesión</a>
     </div>
+</div>
+
 {% endblock %}

@@ -102,7 +102,7 @@
 }
 
 .alert {
-    width: 80%;
+    width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,11 +116,44 @@
     color: #fff;
 }
 
+.info-input {
+    position: absolute;
+    top: 15px;
+    left: -20px;
+}
+
+.info-input p {
+    position: absolute;
+    background-color: #f6f6f6;
+    border-radius: 0px 10px 10px 10px;
+    border: 1px solid #515151;
+    padding: 8px 10px;
+    width: 200px;
+    top: 30px;
+    left: 45px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: justify;
+    transform: translateX(-50%); /* Comienza fuera de la vista */
+    opacity: 0; /* Comienza completamente transparente */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Transición suave para transform y opacity */
+}
+
+.info-input:hover p {
+    transform: translateX(0%); /* Mueve el texto a su posición original */
+    opacity: 1; /* Hace el texto completamente opaco */
+}
+
+
+
 /* Datos Financieros */
 
 @media (max-width: 600px) {
     .title-datas {
         font-size: 30px;
+    }
+    .alert p {
+        font-size: 20px;
     }
 }
 

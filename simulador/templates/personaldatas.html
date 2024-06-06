@@ -19,19 +19,19 @@
     <h3 class="title-datas">1. Ingresa tus datos personales y finacieros</h3>
     <p>
         Ingresa tus datos personales, junto con tus datos financieros, por favor
-        ingresa los datos mas reales, ya que la simulacion dependerea ellos, y
-        estos seran validados a la hora de solicitar el credito.
+        ingresa tus datos reales, ya que la simulación dependerá ellos, y
+        estos serán validados a la hora de solicitar el crédito.
     </p>
 
     <div class="personal-datas" id="alert">
-        <div class="wave-group">
+      <div class="wave-group">
             {% if form_data %}
-                <input required id="name" type="text" class="input" name="name" value="{{ form_data.name}}">
+                <input required id="name" type="text" class="input" name="name" value="{{ form_data.name }}">
             {% else %}
                 <input required id="name" type="text" class="input" name="name">
             {% endif %}
 
-          
+
             <span class="bar"></span>
             <label for="name" class="label">
               <span class="label-char" style="--index: 0">N</span>
@@ -87,6 +87,10 @@
           </div>
           
         <div class="wave-group">
+          <div class="info-input">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-info-octagon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
+            <p>Recuerde ingresar su salario neto sin ningún tipo de descuento.</p>
+          </div>
             {% if form_data %}
               <input required id="salario" type="text" class="input" name="salario" oninput="handleChange('salario')" value="{{form_data.salario}}">
             {% else%}
@@ -105,6 +109,10 @@
           </div>
 
           <div class="wave-group">
+            <div class="info-input">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-info-octagon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
+              <p>Recuerde que estos ingresos deben ser justificados con extractos o certificados válidos.</p>
+            </div>
             {% if form_data %}
               <input required id="others" type="text" class="input" name="others" oninput="handleChange('others')" value="{{form_data.others}}">
             {% else%}
@@ -130,6 +138,10 @@
           </div>
 
           <div class="wave-group">
+            <div class="info-input">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-info-octagon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
+              <p>Tenga en cuanta, solo los débitos generados en su nómina, que se descuenten de forma automática.</p>
+            </div>
             {% if form_data %}
               <input required id="debit" type="text" class="input" name="debit" oninput="handleChange('debit')" value="{{form_data.debit}}">
             {% else%}

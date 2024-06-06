@@ -1,26 +1,17 @@
-const btlibreinversion = document.getElementById('bt-libreinversion')
-const btlibranza = document.getElementById('bt-libranza')
-const btcartera = document.getElementById('bt-cartera')
+import { jsPDF } from 'jspdf';
 
-const divcartera = document.getElementById('cartera')
-const divlibranza = document.getElementById('libranza')
-const divlibreinversiob = document.getElementById('libreinversion')
 
-btlibreinversion.addEventListener('click', () => {
-    divcartera.style.display = 'none'
-    divlibranza.style.display = 'none'
-    divlibreinversiob.style.display = 'block'
-})
+window.downloadPDF = function() {
+    console.log("test")
+    var doc = new jsPDF();
+    doc.text('Hola mundo!', 10, 10);
+    doc.save('hola_mundo.pdf');
+}
 
-btlibranza.addEventListener('click', () => {
-    divcartera.style.display = 'none'
-    divlibranza.style.display = 'block'
-    divlibreinversiob.style.display = 'none'
+window.test = function() {
+    console.log("test");
+};
 
-})
 
-btcartera.addEventListener('click', () => {
-    divcartera.style.display = 'block'
-    divlibranza.style.display = 'none'
-    divlibreinversiob.style.display = 'none'
-})
+// window.downloadPDF = downloadPDF;
+// window.test = test;
