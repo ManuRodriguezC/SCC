@@ -8,7 +8,14 @@
         <title>
             {% block title %}{% endblock title %}
         </title>
-        <meta name="description" content="">
+        <link rel="icon" type="image/png" href="http://127.0.0.1:6001/static/images/logo.png">
+        <meta name="description" content="Simulador de créditos Cootratiempo. Conoce las líneas y tipos de crédito disponibles. Simula tu monto, genera tu certificado y calcula tus cuotas.">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://simuladorcreditocootratiempo.pythonanywhere.com/">
+        <meta property="og:title" content="Simulador de Créditos Cootratiempo">
+        <meta property="og:description" content="Simula tu monto, genera tu certificado y calcula tus cuotas.">
+        <meta property="og:image" content="https://simuladorcreditocootratiempo.pythonanywhere.com/static/images/logo_cootratiempo.jpg">
+        <meta property="og:url" content="URL_CANONICA_DE_TU_PAGINA">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block styles %}{% endblock styles %}
         <link href="{% static "css/base.css" %}" rel="stylesheet">
@@ -19,7 +26,7 @@
                 <picture>
                     <img  src="{% static 'images/logo_cootratiempo.jpg' %}" alt="">
                 </picture>
-                <h2 class="title">Simulador Crédito</h2>
+                <h1 class="title"><a class="simulador-link" href="{% url 'simulador'%}">Simulador Crédito</a></h1>
         </header>
         <div class="mix">
             {% if request.user.is_authenticated %}

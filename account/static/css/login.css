@@ -100,12 +100,22 @@
   box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
 }
 
+.form ul li {
+  color: #0099ff;
+  font-size: 12px;
+}
+
+.successfull {
+  display: flex;
+  flex-direction: column;
+}
+
 .agreement {
   display: block;
   text-align: center;
   margin-top: 15px;
   color: #0099ff;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .container-2 {
