@@ -53,36 +53,42 @@ class Tasas(models.Model):
     fianza = models.FloatField()
     plazoMax = models.IntegerField()
     garantia = models.TextField(max_length=500)
+    requsitos = models.TextField(max_length=500)
     tasa = models.FloatField()
     
     def __str__(self):
         return f"{self.name} socre {self.scoreMax} - {self.scoreMin}: tasa {self.tasa}"
 
-class DeudaAporte(models.Model):
+class Salary(models.Model):
     """"""
-    name = models.CharField(max_length=100, unique=True)
-    tasa = models.FloatField()
-    montoMax = models.IntegerField()
-    plazoMin = models.IntegerField()
-    plazoMax = models.IntegerField()
-    garantia = models.TextField(max_length=500)
-    requisitos = models.TextField(max_length=500)
-    
-    def __str__(self):
-        return f"{self.name} entre {self.plazoMin} y {self.plazoMax} cuotas"
+    name = models.CharField(max_length=100)
+    value = models.CharField(max_length=100)
 
-class Extracupo(models.Model):
-    """"""
-    name = models.CharField(max_length=100, unique=True)
-    tasa = models.FloatField()
-    montoMax = models.IntegerField()
-    plazoMin = models.IntegerField()
-    plazoMax = models.IntegerField()
-    garantia = models.TextField(max_length=2000)
-    requisitos = models.TextField(max_length=2000)
+# class DeudaAporte(models.Model):
+#     """"""
+#     name = models.CharField(max_length=100, unique=True)
+#     tasa = models.FloatField()
+#     montoMax = models.IntegerField()
+#     plazoMin = models.IntegerField()
+#     plazoMax = models.IntegerField()
+#     garantia = models.TextField(max_length=500)
+#     requisitos = models.TextField(max_length=500)
     
-    def __str__(self):
-        return f"{self.name}"
+#     def __str__(self):
+#         return f"{self.name} entre {self.plazoMin} y {self.plazoMax} cuotas"
+
+# class Extracupo(models.Model):
+#     """"""
+#     name = models.CharField(max_length=100, unique=True)
+#     tasa = models.FloatField()
+#     montoMax = models.IntegerField()
+#     plazoMin = models.IntegerField()
+#     plazoMax = models.IntegerField()
+#     garantia = models.TextField(max_length=2000)
+#     requisitos = models.TextField(max_length=2000)
+    
+#     def __str__(self):
+#         return f"{self.name}"
     
 class Simulation(models.Model):
     name =models.CharField(max_length=100)
@@ -95,7 +101,3 @@ class Simulation(models.Model):
     value = models.CharField(max_length=100)
     cuotas = models.CharField(max_length=100)
 
-class Salary(models.Model):
-    """"""
-    name = models.CharField(max_length=100)
-    value = models.CharField(max_length=100)

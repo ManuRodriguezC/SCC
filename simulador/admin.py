@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DeudaAporte, Extracupo, SocialesRetencion, Sociales, Extra, Salary, Tasas
+from .models import SocialesRetencion, Sociales, Extra, Salary, Tasas
 
 # @admin.register(DeudaAporte)
 # class DeudaAporteAdmin(admin.ModelAdmin):

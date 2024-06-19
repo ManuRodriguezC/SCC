@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import DeudaAporteForm, ExtracupoForm, SalaryForm
-from .models import DeudaAporte, Extracupo, Salary, SocialesRetencion, Sociales, Extra
+from .forms import SalaryForm, SocialesRetencionForm, SocialesForm, ExtraForm, TasasForm
+from .models import Salary, SocialesRetencion, Sociales, Extra, Tasas
 from django.contrib import messages
 from .pagoMensual import pagoMensual
 import io
@@ -12,8 +12,6 @@ from .formatNumber import formatNumber
 
 
 def simulador(request):
-    # deudaAporte = DeudaAporte.objects.all()
-    # extracupo = Extracupo.objects.all()
     socialesRetencion = SocialesRetencion.objects.all()
     sociales = Sociales.objects.all()
     extras = Extra.objects.all()
@@ -45,6 +43,7 @@ def simulador(request):
         if SocialesRetencion.objects.filter(name=typeCredit).exists():
             tipocredito = "socialretencion"
             currentType = SocialesRetencion.objects.get(name=typeCredit)
+            plazoMax = currentType.plazoMax
             aportes = request.POST.get('aportes')
             montoMaximoCredit = int(int(aportes.replace(".", "")) * float(currentType.aportesMax / 100))
             rangos1 = currentType.rango1.split(" ")
@@ -70,6 +69,7 @@ def simulador(request):
                 tasa = float(rangos7[5])
         elif Sociales.objects.filter(name=typeCredit).exists():
             currentType = Sociales.objects.get(name=typeCredit)
+            plazoMax = currentType.plazoMax
             rangos1 = currentType.rango1.split(" ")
             if int(cuotas) >= int(rangos1[1]) and int(cuotas) <= int(rangos1[3]):
                 tasa = float(rangos1[5])
@@ -101,15 +101,31 @@ def simulador(request):
         else:  
             if Extra.objects.filter(name=typeCredit).exists():
                 currentType = Extra.objects.get(name=typeCredit)
+                if int(cuotas) > int(currentType.plazoMax):
+                    messages.error(request, f"El plazo máximo de cuotas para la linea {currentType.name} es {currentType.plazoMax}.")
+                    return redirect('/')
                 typeperson = request.POST.get('typeperson')
+                tasas = Tasas.objects.filter(name=typeperson)
                 score = request.POST.get('score')
+                if int(score) > 1000 or int(score) <= 0:
+                    messages.error(request, f"El rango de score debe estar entre 1 y 1000")
+                    return redirect('/')
+                for tasa in tasas:
+                    if int(score) > float(tasa.scoreMin) and int(score) <= float(tasa.scoreMax):
+                        plazoMax = tasa.plazoMax
+                        tasa = float(tasa.tasa)
+                        break
+                    else:
+                        messages.error(request, f"Su score no aplica para solicitar un credito.")
+                        return redirect('/')
+                        
 
         request.session['form_data'] = data
         
         # montoMaximoCredit = int(currentSalari.replace(".", "")) * currentType.montoMax
-        
-        if int(cuotas) > int(currentType.plazoMax):
-            messages.error(request, f"El plazo máximo de cuotas es {currentType.plazoMax}.")
+        print(plazoMax)
+        if int(cuotas) > int(plazoMax):
+            messages.error(request, f"El plazo máximo de cuotas es {plazoMax}.")
             return redirect('/')
         
         ingresosSalario = int(data['salario'].replace(".", ""))
@@ -119,7 +135,6 @@ def simulador(request):
         ingresosTotales = ingresosSalario + ingresosOtros
         
         capacidadPago = int(((ingresosTotales * 30) / 100) - egresos)
-                
         montoMensual = pagoMensual(monto, tasa, cuotas)
         
         montoMax = int((int(monto.replace(".", "")) * capacidadPago) / montoMensual)
@@ -162,8 +177,6 @@ def simulador(request):
 
     form_data = request.session.get('form_data', {})
     return render(request, 'simulador.html', {
-        'deudaaporte': deudaAporte,
-        'extracupo': extracupo,
         'socialesRetencion': socialesRetencion,
         'sociales': sociales,
         'extras': extras,
@@ -175,70 +188,142 @@ def simulacion(request):
     return render(request, 'dialog.html', datos)
 
 @login_required
-def deudaAporte(request):
-    deudaAportes = DeudaAporte.objects.all()
+def socialRetencion(request):
+    socialreten = SocialesRetencion.objects.all()
     if request.method == 'POST':
-        form = DeudaAporteForm(request.POST)
+        form = SocialesRetencionForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/deudaaporte')
+            return redirect('/socialesretencion')
     else:
-        form = DeudaAporteForm()
-    return render(request, 'deudaaporte/deudaaportes.html',
-                  {'deudaaportes': deudaAportes,
+        form = SocialesRetencionForm()
+    return render(request, 'socialesretencion/socialretencion.html',
+                  {'socialreten': socialreten,
                    'form': form})
 
 @login_required
-def update_deudaaporte(request, id):
-    deudaaporte = get_object_or_404(DeudaAporte, id=id)
+def update_socialRetencion(request, id):
+    socialesReten = get_object_or_404(SocialesRetencion, id=id)
 
     if request.method == 'POST':
-        form = DeudaAporteForm(request.POST, instance=deudaaporte)
+        form = SocialesRetencionForm(request.POST, instance=socialesReten)
         if form.is_valid():
             form.save()
-            return redirect('/deudaaporte')
+            return redirect('/socialesretencion')
     else:
-        form = DeudaAporteForm(instance=deudaaporte)
+        form = SocialesRetencionForm(instance=socialesReten)
 
-    return render(request, 'deudaaporte/updatedeudaaporte.html', {'form': form})
+    return render(request, 'socialesretencion/updatesocialesretencion.html', {'form': form})
 
 @login_required
-def delete_deudaaporte(request, id):
+def delete_socialRetencion(request, id):
     """"""
-    deudaaporte = get_object_or_404(DeudaAporte, id=id)
-    deudaaporte.delete()
-    return redirect('/deudaaporte')
+    socialesreten = get_object_or_404(SocialesRetencionForm, id=id)
+    socialesreten.delete()
+    return redirect('/socialesreten')
+
 
 @login_required
-def extracupo(request):
-    extracupos = Extracupo.objects.all()
+def social(request):
+    social = Sociales.objects.all()
     if request.method == 'POST':
-        form = ExtracupoForm(request.POST)
+        form = SocialesForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/extracupos')
+            return redirect('/sociales')
     else:
-        form = ExtracupoForm()
-    return render(request, 'extracupo/extracupos.html',
-                  {'extracupos': extracupos,
+        form = SocialesForm()
+    return render(request, 'sociales/sociales.html',
+                  {'social': social,
                    'form': form})
 
 @login_required
-def update_extracupo(request, id):
-    extracupo = get_object_or_404(Extracupo, id=id)
-    
+def update_social(request, id):
+    sociales = get_object_or_404(Sociales, id=id)
+
     if request.method == 'POST':
-        form = ExtracupoForm(request.POST, instance=extracupo)
+        form = SocialesForm(request.POST, instance=sociales)
         if form.is_valid():
             form.save()
-            return redirect('/extracupos')
+            return redirect('/sociales')
     else:
-        form = ExtracupoForm(instance=extracupo)
-    
-    return render(request, 'extracupo/updateextracupo.html', {'form': form})
+        form = SocialesForm(instance=sociales)
+
+    return render(request, 'sociales/updatesociales.html', {'form': form})
 
 @login_required
-def delete_extracupo(request, id):
+def delete_social(request, id):
+    """"""
+    socialesreten = get_object_or_404(SocialesForm, id=id)
+    socialesreten.delete()
+    return redirect('/sociales')
+
+
+# @login_required
+# def deudaAporte(request):
+#     deudaAportes = DeudaAporte.objects.all()
+#     if request.method == 'POST':
+#         form = DeudaAporteForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/deudaaporte')
+#     else:
+#         form = DeudaAporteForm()
+#     return render(request, 'deudaaporte/deudaaportes.html',
+#                   {'deudaaportes': deudaAportes,
+#                    'form': form})
+
+# @login_required
+# def update_deudaaporte(request, id):
+#     deudaaporte = get_object_or_404(DeudaAporte, id=id)
+
+#     if request.method == 'POST':
+#         form = DeudaAporteForm(request.POST, instance=deudaaporte)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/deudaaporte')
+#     else:
+#         form = DeudaAporteForm(instance=deudaaporte)
+
+#     return render(request, 'deudaaporte/updatedeudaaporte.html', {'form': form})
+
+# @login_required
+# def delete_deudaaporte(request, id):
+#     """"""
+#     deudaaporte = get_object_or_404(DeudaAporte, id=id)
+#     deudaaporte.delete()
+#     return redirect('/deudaaporte')
+
+# @login_required
+# def extracupo(request):
+#     extracupos = Extracupo.objects.all()
+#     if request.method == 'POST':
+#         form = ExtracupoForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/extracupos')
+#     else:
+#         form = ExtracupoForm()
+#     return render(request, 'extracupo/extracupos.html',
+#                   {'extracupos': extracupos,
+#                    'form': form})
+
+# @login_required
+# def update_extracupo(request, id):
+#     extracupo = get_object_or_404(Extracupo, id=id)
+    
+#     if request.method == 'POST':
+#         form = ExtracupoForm(request.POST, instance=extracupo)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('/extracupos')
+#     else:
+#         form = ExtracupoForm(instance=extracupo)
+    
+#     return render(request, 'extracupo/updateextracupo.html', {'form': form})
+
+# @login_required
+# def delete_extracupo(request, id):
     extracupo = get_object_or_404(Extracupo, id=id)
     extracupo.delete()
     return redirect('/extracupos')

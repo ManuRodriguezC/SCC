@@ -67,14 +67,15 @@ article {
 }
 
 .name {
-    color: #488aec;
-    font-size: 16px;
+    color: #e3db02;
+    font-size: 20px;
     font-weight: 200;
-    margin: 0;
+    margin: 5px;
 }
 
 .tasa, .value {
-    margin: 0;
+    font-weight: 100;
+    margin: 5px;
     color: #fff;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
