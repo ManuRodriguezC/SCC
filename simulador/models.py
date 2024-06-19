@@ -1,27 +1,62 @@
 from django.db import models
 
-class User(models.Model):
-    VENTANILLA = "VT"
-    NOMINA = "NM"
-    TYPE_ASOCIADOS = {
-        VENTANILLA: "Ventanilla",
-        NOMINA: "Nomina"
-    }
+class SocialesRetencion(models.Model):
+    """"""
+    name = models.CharField(max_length=100, unique=True)
+    rango1 = models.CharField(max_length=200)
+    rango2 = models.CharField(max_length=200)
+    rango3 = models.CharField(max_length=200)
+    rango4 = models.CharField(max_length=200)
+    rango5 = models.CharField(max_length=200)
+    rango6 = models.CharField(max_length=200)
+    rango7 = models.CharField(max_length=200)    
+    aportesMax = models.IntegerField()
+    plazoMax = models.IntegerField()
+    garantia = models.TextField(max_length=500)
+    requisitos = models.TextField(max_length=500)
     
-    ONE = "Entre 0 y 2 años"
-    TWO = "Entre 2 y 5 años"
-    THREE = "Mayor a 5 años"
-    TYPE_TIME = {
-        ONE: "Entre 0 y 2 años",
-        TWO: "Entre 2 y 5 años",
-        THREE: "Mayor a 5 años"
-    }
+    def __str__(self):
+        return f"{self.name} aportes maximos {self.plazoMax}"
+
+class Sociales(models.Model):
+    """"""
+    name = models.CharField(max_length=100, unique=True)
+    rango1 = models.CharField(max_length=200)
+    rango2 = models.CharField(max_length=200)
+    rango3 = models.CharField(max_length=200)
+    rango4 = models.CharField(max_length=200, null=True, blank=True)
+    rango5 = models.CharField(max_length=200, null=True, blank=True)
+    rango6 = models.CharField(max_length=200, null=True, blank=True)
+    rango7 = models.CharField(max_length=200, null=True, blank=True)  
+    rango8 = models.CharField(max_length=200, null=True, blank=True)
+    plazoMax = models.IntegerField()
+    garantia = models.TextField(max_length=500)
+    requisitos = models.TextField(max_length=500)
+
+    def __str__(self):
+        return f"{self.name} aportes maximos {self.plazoMax}"
+
+class Extra(models.Model):
+    """"""
+    name = models.CharField(max_length=100, unique=True)
+    plazoMax = models.IntegerField()
+    garantia = models.TextField(max_length=500)
+    requisitos = models.TextField(max_length=500)
     
+    def __str__(self):
+        return f"{self.name}"
+
+class Tasas(models.Model):
     name = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    document = models.IntegerField()
-    type = models.CharField(max_length=20, choices=TYPE_ASOCIADOS.items())
-    time = models.CharField(max_length=20, choices=TYPE_TIME.items())
+    scoreMin = models.IntegerField()
+    scoreMax = models.IntegerField()
+    fianza = models.FloatField()
+    plazoMax = models.IntegerField()
+    garantia = models.TextField(max_length=500)
+    tasa = models.FloatField()
+    
+    def __str__(self):
+        return f"{self.name} socre {self.scoreMax} - {self.scoreMin}: tasa {self.tasa}"
 
 class DeudaAporte(models.Model):
     """"""
@@ -35,7 +70,6 @@ class DeudaAporte(models.Model):
     
     def __str__(self):
         return f"{self.name} entre {self.plazoMin} y {self.plazoMax} cuotas"
-
 
 class Extracupo(models.Model):
     """"""

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import DeudaAporteForm, ExtracupoForm, SalaryForm
-from .models import DeudaAporte, Extracupo, Salary
+from .models import DeudaAporte, Extracupo, Salary, SocialesRetencion, Sociales, Extra
 from django.contrib import messages
 from .pagoMensual import pagoMensual
 import io
@@ -12,10 +12,14 @@ from .formatNumber import formatNumber
 
 
 def simulador(request):
-    deudaAporte = DeudaAporte.objects.all()
-    extracupo = Extracupo.objects.all()
+    # deudaAporte = DeudaAporte.objects.all()
+    # extracupo = Extracupo.objects.all()
+    socialesRetencion = SocialesRetencion.objects.all()
+    sociales = Sociales.objects.all()
+    extras = Extra.objects.all()
+    
     salario = Salary.objects.all()
-    currentSalari = salario[0].value
+    currentSalari = salario[0].value.replace(".", "")
 
     if request.method == 'POST':
         data = {
@@ -26,19 +30,87 @@ def simulador(request):
             'others': request.POST.get('others'),
             'debit': request.POST.get('debit'),
         }
-        typeCredit = request.POST.get('typecredit1') if request.POST.get('typecredit1') else request.POST.get('typecredit2')
-        monto = request.POST.get('monto1') if request.POST.get('monto1') else request.POST.get('monto2')
-        cuotas = request.POST.get('cuotas1') if request.POST.get('cuotas1') else request.POST.get('cuotas2')
         
-        if DeudaAporte.objects.filter(name=typeCredit).exists():
-            currentType = DeudaAporte.objects.get(name=typeCredit)
-        else:
-            if Extracupo.objects.filter(id=typeCredit).exists():
-                currentType = Extracupo.objects.get(id=typeCredit)
+        valuesTypecredit = ['typecredit1', 'typecredit2', 'typecredit3']
+        typeCredit = next((request.POST.get(value) for value in valuesTypecredit if request.POST.get(value)))
+        
+        valuesMonto = ['monto1', 'monto2', 'monto3']
+        monto = next((request.POST.get(value) for value in valuesMonto if request.POST.get(value)))
+        
+        valuesCuotas = ['cuotas1', 'cuotas2', 'cuotas3']
+        cuotas = next((request.POST.get(value) for value in valuesCuotas if request.POST.get(value)))
+        
+        tipocredito = ""
+    
+        if SocialesRetencion.objects.filter(name=typeCredit).exists():
+            tipocredito = "socialretencion"
+            currentType = SocialesRetencion.objects.get(name=typeCredit)
+            aportes = request.POST.get('aportes')
+            montoMaximoCredit = int(int(aportes.replace(".", "")) * float(currentType.aportesMax / 100))
+            rangos1 = currentType.rango1.split(" ")
+            rangos2 = currentType.rango2.split(" ")
+            rangos3 = currentType.rango3.split(" ")
+            rangos4 = currentType.rango4.split(" ")
+            rangos5 = currentType.rango5.split(" ")
+            rangos6 = currentType.rango6.split(" ")
+            rangos7 = currentType.rango7.split(" ")
+            if int(cuotas) >= int(rangos1[1]) and int(cuotas) <= int(rangos1[3]):
+                tasa = float(rangos1[5])
+            if int(cuotas) >= int(rangos2[1]) and int(cuotas) <= int(rangos2[3]):
+                tasa = float(rangos2[5])
+            if int(cuotas) >= int(rangos3[1]) and int(cuotas) <= int(rangos3[3]):
+                tasa = float(rangos3[5])
+            if int(cuotas) >= int(rangos4[1]) and int(cuotas) <= int(rangos4[3]):
+                tasa = float(rangos4[5])
+            if int(cuotas) >= int(rangos5[1]) and int(cuotas) <= int(rangos5[3]):
+                tasa = float(rangos5[5])
+            if int(cuotas) >= int(rangos6[1]) and int(cuotas) <= int(rangos6[3]):
+                tasa = float(rangos6[5])
+            if int(cuotas) >= int(rangos7[1]) and int(cuotas) <= int(rangos7[3]):
+                tasa = float(rangos7[5])
+        elif Sociales.objects.filter(name=typeCredit).exists():
+            currentType = Sociales.objects.get(name=typeCredit)
+            rangos1 = currentType.rango1.split(" ")
+            if int(cuotas) >= int(rangos1[1]) and int(cuotas) <= int(rangos1[3]):
+                tasa = float(rangos1[5])
+            rangos2 = currentType.rango2.split(" ")
+            if int(cuotas) >= int(rangos2[1]) and int(cuotas) <= int(rangos2[3]):
+                tasa = float(rangos2[5])
+            rangos3 = currentType.rango3.split(" ")
+            if int(cuotas) >= int(rangos3[1]) and int(cuotas) <= int(rangos3[3]):
+                tasa = float(rangos3[5])
+            rangos4 = currentType.rango4.split(" ")
+            if int(cuotas) >= int(rangos4[1]) and int(cuotas) <= int(rangos4[3]):
+                tasa = float(rangos4[5])
+            if currentType.rango5:
+                rangos5 = currentType.rango5.split(" ")
+                if int(cuotas) >= int(rangos5[1]) and int(cuotas) <= int(rangos5[3]):
+                    tasa = float(rangos5[5])
+            if currentType.rango6:
+                rangos6 = currentType.rango6.split(" ")
+                if int(cuotas) >= int(rangos6[1]) and int(cuotas) <= int(rangos6[3]):
+                    tasa = float(rangos6[5])
+            if currentType.rango7:
+                rangos7 = currentType.rango7.split(" ")
+                if int(cuotas) >= int(rangos7[1]) and int(cuotas) <= int(rangos7[3]):
+                    tasa = float(rangos7[5])
+            if currentType.rango8:
+                rangos8 = currentType.rango8.split(" ")
+                if int(cuotas) >= int(rangos8[1]) and int(cuotas) <= int(rangos8[3]):
+                    tasa = float(rangos8[5]) 
+        else:  
+            if Extra.objects.filter(name=typeCredit).exists():
+                currentType = Extra.objects.get(name=typeCredit)
+                typeperson = request.POST.get('typeperson')
+                score = request.POST.get('score')
 
         request.session['form_data'] = data
         
-        montoMaximoCredit = int(currentSalari.replace(".", "")) * currentType.montoMax
+        # montoMaximoCredit = int(currentSalari.replace(".", "")) * currentType.montoMax
+        
+        if int(cuotas) > int(currentType.plazoMax):
+            messages.error(request, f"El plazo máximo de cuotas es {currentType.plazoMax}.")
+            return redirect('/')
         
         ingresosSalario = int(data['salario'].replace(".", ""))
         seguridadSocial = (ingresosSalario * 8) / 100
@@ -47,38 +119,35 @@ def simulador(request):
         ingresosTotales = ingresosSalario + ingresosOtros
         
         capacidadPago = int(((ingresosTotales * 30) / 100) - egresos)
-        
-        montoMensual = pagoMensual(monto, currentType.tasa, cuotas)
+                
+        montoMensual = pagoMensual(monto, tasa, cuotas)
         
         montoMax = int((int(monto.replace(".", "")) * capacidadPago) / montoMensual)
-        
-        #Control de cuotas minimas y maximas
-        if int(cuotas) > int(currentType.plazoMax) or int(cuotas) < int(currentType.plazoMin):
-            messages.error(request, f"El plazo mínimo de cuotas es {currentType.plazoMin} y máximo de {currentType.plazoMax} cuotas.")
-            return redirect('/')
 
-        # Control de monto maximo segun capacidad de pago
-        if int(monto.replace(".", "")) > montoMax:
-            if montoMax < 0:
-                messages.error(request, f"Su capacidad de pago no aplica para solicitar un crédito.")
-            else:
-                number = formatNumber(montoMax)
-                messages.error(request, f"El monto máximo según la capacidad de pago es de $ {number}")
-            return redirect('/')
-        
-        # Control de monto maximo
-        if int(monto.replace(".", "")) > montoMaximoCredit:
-            number = formatNumber(montoMaximoCredit)
-            messages.error(request, f"El monto máximo a solicitar es de $ {number}")
-            return redirect('/')
+        if tipocredito == "socialretencion":
+            montoMax = montoMaximoCredit
+
+        if tipocredito != "socialretencion":
+            if int(monto.replace(".", "")) > montoMax:
+                if montoMax < 0:
+                    messages.error(request, f"Su capacidad de pago no aplica para solicitar un crédito.")
+                else:
+                    number = formatNumber(montoMax)
+                    messages.error(request, f"El monto máximo según la capacidad de pago es de $ {number}")
+                return redirect('/')
+        else:
+            if int(monto.replace(".", "")) > montoMaximoCredit:
+                number = formatNumber(montoMaximoCredit)
+                messages.error(request, f"El monto máximo a solicitar es de $ {number}")
+                return redirect('/')
         
         datas = {
             'data': data,
             'type': currentType.name,
             'monto': monto,
             'cuotas': cuotas,
-            'tasaAnual': currentType.tasa,
-            'tasaMensual': round(currentType.tasa / 12, 2),
+            'tasaAnual': round(tasa * 12, 4),
+            'tasaMensual': tasa,
             'garantias': currentType.garantia,
             'requisitos': currentType.requisitos,
             'seguridad': int(seguridadSocial),
@@ -95,7 +164,10 @@ def simulador(request):
     return render(request, 'simulador.html', {
         'deudaaporte': deudaAporte,
         'extracupo': extracupo,
-        'form_data': form_data  # Agrega esto
+        'socialesRetencion': socialesRetencion,
+        'sociales': sociales,
+        'extras': extras,
+        'form_data': form_data
     })
     
 def simulacion(request):

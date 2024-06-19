@@ -48,6 +48,10 @@ footer {
     text-align: center;
 }
 
+footer div {
+    width: 300px;
+}
+
 footer img {
     border-radius: 5px;
 }

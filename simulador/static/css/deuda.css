@@ -38,6 +38,18 @@ select {
     text-align: center;
 }
 
+.typeperson {
+    margin-bottom: 30px;
+    padding: 5px 10px;
+    font-size: 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.aportes {
+    margin: 40px 0px;
+}
+
 .three {
     width: 100%;
     display: flex;
@@ -46,6 +58,12 @@ select {
     align-items: center;
     background-color: #fff;
     margin-top: 40px;
+}
+
+@media (max-width: 700px) {
+    .title-types {
+        font-size: 30px;
+    }
 }
 
 @media (max-width: 500px) {

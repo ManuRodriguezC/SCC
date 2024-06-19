@@ -8,15 +8,19 @@
     <div id="flex-container">
       <h2 class="title-2">2. Selecciona tu linea y tipo de credito</h2>
       <div class="options">
-        <p id="bt-type-1" class="bt-type select">Creditos Deuda / Aporte</p>
-        <p id="bt-type-2" class="bt-type">Creditos Extracupo</p>
+        <p id="bt-type-1" class="bt-type select">Lineas Sociales y Retencion</p>
+        <p id="bt-type-2" class="bt-type">Lineas Sociales</p>
+        <p id="bt-type-3" class="bt-type">Creditos Extracupo</p>
       </div>
 
         <div class="type-1 visible-1" id="type-1">
-          {% include "types/deuda.html" %}
+          {% include "types/socialesRetencion.html" %}
         </div>
         <div class="type-2" id="type-2">
-          {% include "types/extracupo.html" %}
+          {% include "types/sociales.html" %}
+        </div>
+        <div class="type-3" id="type-3">
+          {% include "types/extra.html" %}
         </div>
     </div>
 
@@ -36,51 +40,125 @@
 
     bt1 = document.getElementById('bt-type-1')
     bt2 = document.getElementById('bt-type-2')
+    bt3 = document.getElementById('bt-type-3')
 
     t1 = document.getElementById('type-1')
     t2 = document.getElementById('type-2')
+    t3 = document.getElementById('type-3')
 
-    typecredit2 = document.getElementById('typecredit2')
     typecredit1 = document.getElementById('typecredit1')
+    typecredit2 = document.getElementById('typecredit2')
+    typecredit3 = document.getElementById('typecredit3')
     
     monto1 = document.getElementById('monto1')
     monto2 = document.getElementById('monto2')
+    monto3 = document.getElementById('monto3')
 
     cuotas1 = document.getElementById('cuotas1')
     cuotas2 = document.getElementById('cuotas2')
+    cuotas3 = document.getElementById('cuotas3')
+
+    score = document.getElementById('score')
+    aportes = document.getElementById('aportes')
 
     bt1.addEventListener('click', () => {
       if (!t1.classList.contains('visible-1')) {
+        monto2.value = ""
+        typecredit2.value = ""
+        cuotas2.value = ""
+        monto3.value = ""
+        typecredit3.value = ""
+        cuotas3.value = ""
+        score.value = ""
+
         t1.classList.add('visible-1');
         t2.classList.remove('visible-2');
+        t3.classList.remove('visible-3');
+
         bt1.classList.add('select')
         bt2.classList.remove('select')
+        bt3.classList.remove('select')
+
         typecredit1.required = true
         monto1.required = true
         cuotas1.required = true
+        aportes.required = true
+
         typecredit2.required = false
-        monto2.value = ''
-        cuotas2.value = ''
-        typecredit2.value = ''
         monto2.required = false
         cuotas2.required = false
+        
+        typecredit3.required = false
+        monto3.required = false
+        cuotas3.required = false
+        score.required = false
       }
     })
+
     bt2.addEventListener('click', () => {
       if (!t2.classList.contains('visible-2')) {
+        monto1.value = ""
+        typecredit1.value = ""
+        cuotas1.value = ""
+        aportes.value = ""
+        monto3.value = ""
+        typecredit3.value = ""
+        cuotas3.value = ""
+        score.value = ""
+
         t2.classList.add('visible-2');
         t1.classList.remove('visible-1');
+        t3.classList.remove('visible-3');
+
+        bt2.classList.add('select') 
         bt1.classList.remove('select')
-        bt2.classList.add('select')
+        bt3.classList.remove('select')
+        
         typecredit2.required = true
         monto2.required = true
         cuotas2.required = true
+
         typecredit1.required = false
         monto1.required = false
         cuotas1.required = false
-        monto1.value = ''
-        cuotas1.value = ''
-        typecredit1.value = ''
+        aportes.required = false
+        typecredit3.required = false
+        monto3.required = false
+        cuotas3.required = false
+        score.required = false
+      }
+    })
+
+    bt3.addEventListener('click', () => {
+      if (!t3.classList.contains('visible-3')) {
+        monto2.value = ""
+        typecredit2.value = ""
+        cuotas2.value = ""
+        monto1.value = ""
+        typecredit1.value = ""
+        cuotas1.value = ""
+        aportes.value = ""
+
+        t3.classList.add('visible-3');
+        t1.classList.remove('visible-1');
+        t2.classList.remove('visible-2');
+
+        bt3.classList.add('select') 
+        bt1.classList.remove('select')
+        bt2.classList.remove('select')
+        
+        typecredit3.required = true
+        monto3.required = true
+        cuotas3.required = true
+        score.required = true
+
+        typecredit1.required = false
+        monto1.required = false
+        cuotas1.required = false
+        aportes.required = false
+        typecredit2.required = false
+        monto2.required = false
+        cuotas2.required = false
       }
     })
   </script>

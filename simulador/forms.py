@@ -1,11 +1,6 @@
 from django import forms
-from .models import User, Extracupo, DeudaAporte, Salary
+from .models import Extracupo, DeudaAporte, Salary
 
-class UserForm(forms.ModelForm):
-    """"""
-    class Meta:
-        model = User
-        fields = ['name', 'lastname', 'document', 'type', 'time']
     
 class ExtracupoForm(forms.ModelForm):
     """"""
