@@ -368,7 +368,7 @@ def generatePdf(request):
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer)
     
-    p.drawImage("http://127.0.0.1:6001/static/images/logo_cootratiempo.jpg", 30, 730, width=60, height=80)
+    # p.drawImage("http://127.0.0.1:6001/static/images/logo_cootratiempo.jpg", 30, 730, width=60, height=80)
     p.setFont("Helvetica-Bold", 25)
     p.setFillColorRGB(0.196, 0.333, 0.627)
     p.drawString(110, 760, "Simulación de Credito Cootratiempo")
