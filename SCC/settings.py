@@ -16,7 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = 'deudaaporte'
+LOGIN_REDIRECT_URL = 'socialesretencion'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 

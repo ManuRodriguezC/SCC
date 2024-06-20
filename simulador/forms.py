@@ -57,15 +57,13 @@ class TasasForm(forms.ModelForm):
     """"""
     class Meta:
         model = Tasas
-        fields = ['name', 'scoreMin', 'scoreMax', 'fianza', 'plazoMax', 'garantia', 'requsitos', 'tasa']
+        fields = ['name', 'scoreMin', 'scoreMax', 'fianza', 'plazoMax', 'tasa']
         labels = {
             'name': 'Nombre',
             'scoreMin': 'Score minimo',
             'scoreMax': 'Score maximo',
             'fianza': 'Porcentaje fianza',
             'plazoMax': 'Plazo maximo de cuotas',
-            'garantia': 'Garantias del credito',
-            'requsitos': 'Requisitos del credito',
             'tasa': 'Tasa',
             }
 

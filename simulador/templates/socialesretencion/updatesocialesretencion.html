@@ -12,7 +12,12 @@
 {% block content %}
 <div class="update-form">
     <h1>Actualizar Sociales Retencion</h1>
+    
     <form method="POST">
+        <p class="example">Los rangos de tasas deben estar definidos mediante la siguiente estructura:</p>
+        <p class="example">Cuotas (numero menor de cuotas) a (numero mayor de cuotas) tasa (tasa)</p>
+        <p class="exam">Ejemplo: Cuotas 25 a 36 tasa 1.15</p>
+      
         {% csrf_token %}
         <div class="form">
             {{form.as_p}}

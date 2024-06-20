@@ -259,6 +259,265 @@ def delete_social(request, id):
     return redirect('/sociales')
 
 
+@login_required
+def extra(request):
+    extras = Extra.objects.all()
+    if request.method == 'POST':
+        form = ExtraForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/extras')
+    else:
+        form = ExtraForm()
+    return render(request, 'extras/extras.html',
+                  {'extras': extras,
+                   'form': form})
+
+@login_required
+def update_extra(request, id):
+    extra = get_object_or_404(Extra, id=id)
+
+    if request.method == 'POST':
+        form = ExtraForm(request.POST, instance=extra)
+        if form.is_valid():
+            form.save()
+            return redirect('/extras')
+    else:
+        form = ExtraForm(instance=extra)
+    return render(request, 'extras/updateextra.html', {'form': form})
+
+@login_required
+def delete_extra(request, id):
+    """"""
+    extra = get_object_or_404(Extra, id=id)
+    extra.delete()
+    return redirect('/extras')
+
+
+@login_required
+def tasas(request):
+    tasas = Tasas.objects.all()
+    if request.method == 'POST':
+        form = TasasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/tasas')
+    else:
+        form = TasasForm()
+    return render(request, 'tasas/tasas.html',
+                  {'tasas': tasas,
+                   'form': form})
+
+@login_required
+def update_tasa(request, id):
+    tasa = get_object_or_404(Tasas, id=id)
+
+    if request.method == 'POST':
+        form = TasasForm(request.POST, instance=tasa)
+        if form.is_valid():
+            form.save()
+            return redirect('/tasas')
+    else:
+        form = TasasForm(instance=tasa)
+    return render(request, 'tasas/updatetasa.html', {'form': form})
+
+@login_required
+def delete_tasa(request, id):
+    """"""
+    tasa = get_object_or_404(Tasas, id=id)
+    tasa.delete()
+    return redirect('/tasas')
+
+
+@login_required
+def salary(request):
+    currentSalary = Salary.objects.all()
+    if request.method == 'POST':
+        form = SalaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/salario')
+    else:
+        form = SalaryForm()
+    return render (request, 'salario/salario.html',
+                   {'salarios': currentSalary,
+                    'form': form})
+
+@login_required
+def updateSalary(request, id):
+    salario = get_object_or_404(Salary, id=id)
+    if request.method == 'POST':
+        form = SalaryForm(request.POST, instance=salario)
+        if form.is_valid():
+            form.save()
+            return redirect('/salario')
+    else:
+        form = SalaryForm(instance=salario)
+    return render(request, 'salario/updatesalario.html', {'form': form})
+
+@login_required
+def delete_salario(request, id):
+    salario = get_object_or_404(Salary, id=id)
+    salario.delete()
+    return redirect('/salario')
+
+def generatePdf(request):
+    """"""
+    datos = request.session.get('calculos', {})
+    
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer)
+    
+    p.drawImage("http://127.0.0.1:6001/static/images/logo_cootratiempo.jpg", 30, 730, width=60, height=80)
+    p.setFont("Helvetica-Bold", 25)
+    p.setFillColorRGB(0.196, 0.333, 0.627)
+    p.drawString(110, 760, "Simulación de Credito Cootratiempo")
+        
+    p.roundRect(360, 700, width=150, height=30, radius=10)
+    p.setFont("Helvetica-Bold", 10)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(380, 718, "Fecha:")
+    p.drawString(380, 705, str(datetime.datetime.now()).split(".")[0])
+    
+    p.setFont("Helvetica-Bold", 18)
+    p.setFillColorRGB(0.196, 0.333, 0.627)
+    p.drawString(200, 670, "Información Asociado")
+    
+    p.roundRect(90, 555, width=420, height=105, radius=10)
+    p.setFont("Helvetica", 12)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(125, 640, "Nombre Asociado")
+    p.drawString(350, 640, datos['datas']['data']['name'])
+    p.drawString(125, 625, "Apellido Asociado")
+    p.drawString(350, 625, datos['datas']['data']['lastname'])
+    p.drawString(125, 610, "Documento Asociado")
+    p.drawString(350, 610, datos['datas']['data']['document'])
+    p.drawString(125, 595, "Salario")
+    p.drawString(350, 595, f"$ {datos['datas']['data']['salario']}")
+    p.drawString(125, 580, "Otros Ingresos")
+    p.drawString(350, 580, f"$ {datos['datas']['data']['others']}")
+    p.drawString(125, 565, "Debitos")
+    p.drawString(350, 565, f"$ {datos['datas']['data']['debit']}")
+
+    p.setFont("Helvetica-Bold", 18)
+    p.setFillColorRGB(0.196, 0.333, 0.627)
+    p.drawString(200, 520, "Datos de la Solicitud")
+    
+    p.setFont("Helvetica", 12)
+    p.setFillColorRGB(0, 0, 0)
+    p.roundRect(90, 420, width=420, height=90, radius=10)
+    p.drawString(125, 490, "Tipo de Credito")
+    p.drawString(350, 490, str(datos['datas']['type']))
+    p.drawString(125, 475, "Monto a Solicitar")
+    p.drawString(350, 475, f"$ {str(datos['datas']['monto'])}")
+    p.drawString(125, 460, "Numero de cuotas")
+    p.drawString(350, 460, str(datos['datas']['cuotas']))
+    p.drawString(125, 445, "Tasa Nominal Anual")
+    p.drawString(350, 445, f"{str(datos['datas']['tasaAnual'])} %")
+    p.drawString(125, 430, "Tasa Nominal Mensual")
+    p.drawString(350, 430, f"{str(datos['datas']['tasaMensual'])} %")
+    
+    
+    p.setFont("Helvetica-Bold", 18)
+    p.setFillColorRGB(0.196, 0.333, 0.627)
+    p.drawString(180, 385, "Datos de la Simulación")
+    
+    p.setFont("Helvetica", 12)
+    p.setFillColorRGB(0, 0, 0)
+    p.roundRect(90, 285, width=420, height=90, radius=10)
+    p.drawString(125, 355, "Aporte seguridad social")
+    p.drawString(350, 355, f"$ {formatNumber(str(datos['datas']['seguridad']))}")
+    p.drawString(125, 340, "Ingresos Totales")
+    p.drawString(350, 340, f"$ {formatNumber(str(datos['datas']['totales']))}")
+    p.drawString(125, 325, "Valor de cuota")
+    p.drawString(350, 325, f"$ {formatNumber(str(datos['datas']['cuota']))}")
+    p.drawString(125, 310, "Descuento Maximo")
+    p.drawString(350, 310, f"$ {formatNumber(str(datos['datas']['capacidad']))}")
+    p.drawString(125, 295, "Monto Maximos a Solicitar")
+    p.drawString(350, 295, f"$ {formatNumber(str(datos['datas']['montomaximo']))}")
+    
+    p.setFont("Helvetica-Bold", 13)
+    p.drawString(70, 260, "Requisitos:")
+    p.setFont("Helvetica", 9)
+    
+    text = datos['datas']['requisitos']
+    splitText = text.split(" ")
+    numberLetter = 0
+    listParagraph = []
+    paragraph = ""
+    for word in splitText:
+        paragraph += word + " "
+        numberLetter += len(word)
+        if numberLetter > 90:
+            listParagraph.append(paragraph)
+            paragraph = ""
+            numberLetter = 0
+    if paragraph != "":
+        listParagraph.append(paragraph)
+    
+    pos = 245
+    for parag in listParagraph:
+        p.drawString(70, pos, parag)
+        pos -= 10
+
+    p.setFont("Helvetica-Bold", 13)
+    posTitle = pos - 20
+    p.drawString(70, posTitle, "Garantias:")
+    p.setFont("Helvetica", 9)
+    
+    text = datos['datas']['garantias']
+    splitText = text.split(" ")
+    numberLetter = 0
+    listParagraph = []
+    paragraph = ""
+    for word in splitText:
+        paragraph += word + " "
+        numberLetter += len(word)
+        if numberLetter > 90:
+            listParagraph.append(paragraph)
+            paragraph = ""
+            numberLetter = 0
+    if paragraph != "":
+        listParagraph.append(paragraph)
+    
+    pos = posTitle - 15
+    for parag in listParagraph:
+        p.drawString(70, pos, parag)
+        pos -= 10
+    
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(60, 115, "Términos y Condiciones")
+    
+    condiciones = "Esta simulación está sujeta a verificación de los datos suministrados por el asociado, los cuales a la hora de solicitar el crédito serán presentados por el mismo y revisados por el área de crédito encargada. A su vez estará sujeta a tasas, requisitos, garantías o líneas vigentes por la Cooperativa Contratiempo. A la hora de solicitar el crédito deben cumplirse con todos los reglamentos según el estatuto actual y vigente por la Cooperativa Contratiempo. Este documento da soporte solo a una simulación, lo cual no representa una probación de crédito ya que requiere ser revisado y validado por el área encargada. Algunas líneas de crédito según el monto o tipo del mismo, requerirán de garantías como Codeudores, pago de seguros o aportes."
+    splitText = condiciones.split(" ")
+    numberLetter = 0
+    listParagraph = []
+    paragraph = ""
+    for word in splitText:
+        paragraph += word + " "
+        numberLetter += len(word)
+        if numberLetter > 117:
+            listParagraph.append(paragraph)
+            paragraph = ""
+            numberLetter = 0
+    if paragraph != "":
+        listParagraph.append(paragraph)
+    
+    pos = 100
+    p.setFont("Helvetica-Oblique", 7)
+    for parag in listParagraph:
+        p.drawString(60, pos, parag)
+        pos -= 10
+
+    
+    
+    p.showPage()
+    p.save()
+    
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="test_simulacion.pdf")
+
+
 # @login_required
 # def deudaAporte(request):
 #     deudaAportes = DeudaAporte.objects.all()
@@ -324,195 +583,6 @@ def delete_social(request, id):
 
 # @login_required
 # def delete_extracupo(request, id):
-    extracupo = get_object_or_404(Extracupo, id=id)
-    extracupo.delete()
-    return redirect('/extracupos')
-
-@login_required
-def salary(request):
-    currentSalary = Salary.objects.all()
-    if request.method == 'POST':
-        form = SalaryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/salario')
-    else:
-        form = SalaryForm()
-    return render (request, 'salario/salario.html',
-                   {'salarios': currentSalary,
-                    'form': form})
-
-@login_required
-def updateSalary(request, id):
-    salario = get_object_or_404(Salary, id=id)
-    if request.method == 'POST':
-        form = SalaryForm(request.POST, instance=salario)
-        if form.is_valid():
-            form.save()
-            return redirect('/salario')
-    else:
-        form = SalaryForm(instance=salario)
-    return render(request, 'salario/updatesalario.html', {'form': form})
-
-@login_required
-def delete_salario(request, id):
-    salario = get_object_or_404(Salary, id=id)
-    salario.delete()
-    return redirect('/salario')
-
-def generatePdf(request):
-    """"""
-    datos = request.session.get('calculos', {})
-    
-    buffer = io.BytesIO()
-    p = canvas.Canvas(buffer)
-    
-    p.drawImage("http://127.0.0.1:6001/static/images/logo_cootratiempo.jpg", 30, 730, width=60, height=80)
-    p.setFont("Helvetica-Bold", 25)
-    p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(110, 760, "Simulación de Credito Cootratiempo")
-        
-    p.roundRect(360, 700, width=150, height=30, radius=10)
-    p.setFont("Helvetica", 10)
-    p.setFillColorRGB(0, 0, 0)
-    p.drawString(380, 718, "Fecha:")
-    p.drawString(380, 705, str(datetime.datetime.now()).split(".")[0])
-    
-    p.setFont("Helvetica-Bold", 18)
-    p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(200, 670, "Información Asociado")
-    
-    p.roundRect(90, 555, width=420, height=105, radius=10)
-    p.setFont("Helvetica", 12)
-    p.setFillColorRGB(0, 0, 0)
-    p.drawString(125, 640, "Nombre Asociado")
-    p.drawString(350, 640, datos['datas']['data']['name'])
-    p.drawString(125, 625, "Apellido Asociado")
-    p.drawString(350, 625, datos['datas']['data']['lastname'])
-    p.drawString(125, 610, "Documento Asociado")
-    p.drawString(350, 610, datos['datas']['data']['document'])
-    p.drawString(125, 595, "Salario")
-    p.drawString(350, 595, f"$ {datos['datas']['data']['salario']}")
-    p.drawString(125, 580, "Otros Ingresos")
-    p.drawString(350, 580, f"$ {datos['datas']['data']['others']}")
-    p.drawString(125, 565, "Debitos")
-    p.drawString(350, 565, f"$ {datos['datas']['data']['debit']}")
-
-    p.setFont("Helvetica-Bold", 18)
-    p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(200, 520, "Datos de la Solicitud")
-    
-    p.setFont("Helvetica", 12)
-    p.setFillColorRGB(0, 0, 0)
-    p.roundRect(90, 420, width=420, height=90, radius=10)
-    p.drawString(125, 490, "Tipo de Credito")
-    p.drawString(350, 490, str(datos['datas']['type']))
-    p.drawString(125, 475, "Monto a Solicitar")
-    p.drawString(350, 475, f"$ {str(datos['datas']['monto'])}")
-    p.drawString(125, 460, "Numero de cuotas")
-    p.drawString(350, 460, str(datos['datas']['cuotas']))
-    p.drawString(125, 445, "Tasa Nominal Anual")
-    p.drawString(350, 445, f"{str(datos['datas']['tasaAnual'])} %")
-    p.drawString(125, 430, "Tasa Nominal Mensual")
-    p.drawString(350, 430, f"{str(datos['datas']['tasaMensual'])} %")
-    
-    
-    p.setFont("Helvetica-Bold", 18)
-    p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(180, 385, "Datos de la Simulacion")
-    
-    p.setFont("Helvetica", 12)
-    p.setFillColorRGB(0, 0, 0)
-    p.roundRect(90, 285, width=420, height=90, radius=10)
-    p.drawString(125, 355, "Aporte seguridad social")
-    p.drawString(350, 355, f"$ {str(datos['datas']['seguridad'])}")
-    p.drawString(125, 340, "Ingresos Totales")
-    p.drawString(350, 340, f"$ {str(datos['datas']['totales'])}")
-    p.drawString(125, 325, "Valor de cuota")
-    p.drawString(350, 325, f"$ {str(datos['datas']['cuota'])}")
-    p.drawString(125, 310, "Descuento Maximo")
-    p.drawString(350, 310, f"$ {str(datos['datas']['capacidad'])}")
-    p.drawString(125, 295, "Monto Maximos a Solicitar")
-    p.drawString(350, 295, f"$ {str(datos['datas']['montomaximo'])}")
-    
-    p.setFont("Helvetica-Bold", 13)
-    p.drawString(70, 260, "Requisitos:")
-    p.setFont("Helvetica", 9)
-    
-    text = datos['datas']['requisitos']
-    splitText = text.split(" ")
-    numberLetter = 0
-    listParagraph = []
-    paragraph = ""
-    for word in splitText:
-        paragraph += word + " "
-        numberLetter += len(word)
-        if numberLetter > 90:
-            listParagraph.append(paragraph)
-            paragraph = ""
-            numberLetter = 0
-    if paragraph != "":
-        listParagraph.append(paragraph)
-    
-    pos = 245
-    for parag in listParagraph:
-        p.drawString(70, pos, parag)
-        pos -= 10
-
-    p.setFont("Helvetica-Bold", 13)
-    posTitle = pos - 20
-    p.drawString(70, posTitle, "Garantias:")
-    p.setFont("Helvetica", 9)
-    
-    text = datos['datas']['garantias']
-    splitText = text.split(" ")
-    numberLetter = 0
-    listParagraph = []
-    paragraph = ""
-    for word in splitText:
-        paragraph += word + " "
-        numberLetter += len(word)
-        if numberLetter > 90:
-            listParagraph.append(paragraph)
-            paragraph = ""
-            numberLetter = 0
-    if paragraph != "":
-        listParagraph.append(paragraph)
-    
-    pos = posTitle - 15
-    for parag in listParagraph:
-        p.drawString(70, pos, parag)
-        pos -= 10
-    
-    p.setFont("Helvetica-Bold", 14)
-    p.drawString(60, 115, "Terminos y Condiciones")
-    
-    condiciones = "1) Tengo conocimiento que si pierdo la calidad de asociado por retiro voluntario o exclusión el valor de mi ahorro se cruzará con los valores pendientes de pago y si esta operación arroja un sobrante a mi favor será reintegrado en un periodo máximo de 90 días calendario de acuerdo con el Estatuto de Cootratiempo. 2) Manifiesto que conozco y acepto, que si pierdo la calidad de Asociado a COOTRATIEMPO respecto de la(s) obligación(es) que se encuentre(n) pendiente de pago, la Entidad Solidaria cobrará la tasa máxima permitida legalmente para el momento de la desvinculación, por la pérdida de mis derechos como Cooperador; de la misma manera declaro que conozco y acepto que las modificaciones pactadas con relación a las tasas de interés, pueden conllevar al incremento en el valor de la cuota y/o incremento del plazo."
-    splitText = condiciones.split(" ")
-    numberLetter = 0
-    listParagraph = []
-    paragraph = ""
-    for word in splitText:
-        paragraph += word + " "
-        numberLetter += len(word)
-        if numberLetter > 117:
-            listParagraph.append(paragraph)
-            paragraph = ""
-            numberLetter = 0
-    if paragraph != "":
-        listParagraph.append(paragraph)
-    
-    pos = 100
-    p.setFont("Helvetica-Oblique", 7)
-    for parag in listParagraph:
-        p.drawString(60, pos, parag)
-        pos -= 10
-
-    
-    
-    p.showPage()
-    p.save()
-    
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename="test_simulacion.pdf")
-
+    # extracupo = get_object_or_404(Extracupo, id=id)
+    # extracupo.delete()
+    # return redirect('/extracupos')

@@ -52,8 +52,8 @@ class Tasas(models.Model):
     scoreMax = models.IntegerField()
     fianza = models.FloatField()
     plazoMax = models.IntegerField()
-    garantia = models.TextField(max_length=500)
-    requsitos = models.TextField(max_length=500)
+    garantia = models.TextField(max_length=500, default=None, null=True)
+    requsitos = models.TextField(max_length=500, default=None, null=True)
     tasa = models.FloatField()
     
     def __str__(self):

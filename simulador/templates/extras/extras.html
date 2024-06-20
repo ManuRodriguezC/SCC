@@ -3,7 +3,7 @@
 {% load humanize %}
 
 
-{% block title %}Tipos de creditos Social Retencion{% endblock title %}
+{% block title %}Tipos de creditos Extra Cupos{% endblock title %}
 
 {% block styles %}
     <link href="{% static "css/deudaaporte/deudaaporte.css" %}" rel="stylesheet">
@@ -11,11 +11,11 @@
 
 {% block content %}
     <div class="aportes">
-        <h2 class="title-aportes">Tipos de creditos Social Retencion</h2>
+        <h2 class="title-aportes">Tipos de creditos Extra Cupo</h2>
         <div class="aporte">
-            {% for data in socialreten %}
+            {% for data in extras %}
                 <article>
-                    <a class="link1" href="{% url 'socialesretencion_update' data.id %}">
+                    <a class="link1" href="{% url 'extra_update' data.id %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -23,7 +23,7 @@
                             <path d="M16 5l3 3" />
                         </svg>
                     </a>
-                    <a class="link2" href="{% url "socialesretencion_delete" data.id %}" onclick="return confirm('Esta seguro de eliminar este tipo de crédito?')">
+                    <a class="link2" href="{% url "extra_delete" data.id %}" onclick="return confirm('Esta seguro de eliminar este tipo de crédito?')">
                         <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <path d="M4 7l16 0" /><path d="M10 11l0 6" />
@@ -32,17 +32,9 @@
                     <a/>
                     <div class="top">
                         <h3 class="name">{{data.name}}</h3>
-                        <h3 class="tasa">{{data.rango1}}</h3>
-                        <h3 class="tasa">{{data.rango2}}</h3>
-                        <h3 class="tasa">{{data.rango3}}</h3>
-                        <h3 class="tasa">{{data.rango4}}</h3>
-                        <h3 class="tasa">{{data.rango5}}</h3>
-                        <h3 class="tasa">{{data.rango6}}</h3>
-                        <h3 class="tasa">{{data.rango7}}</h3>
                     </div>
                     <div class="sections">
                         <p class="desc">Numero maximo de cuotas: <span class="value">{{data.plazoMax}}</span></p>
-                        <p class="desc">Aportes Maximos: <span class="value">{{data.aportesMax}}</span></p>
                     </div>
                     <div class="sections">
                         <p class="sub">Garantias:</p>
@@ -55,6 +47,6 @@
                 </article>
             {% endfor %}
         </div>
-        {% include "socialesretencion/createsocialesretencion.html" %}
+        {% include "extras/createextra.html" %}
     </div>
 {% endblock content %}
