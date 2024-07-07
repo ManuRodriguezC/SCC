@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: #e9e6f0;
     padding-bottom: 40px;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
@@ -26,7 +26,7 @@
 }
 
 article {
-    max-width: 350px;
+    max-width: 450px;
     min-height: 100px;
     background-color: rgb(7 16 45);
     background: linear-gradient(to top right, rgb(7 16 45), var(--blue));
@@ -67,16 +67,22 @@ article {
 }
 
 .name {
-    color: #488aec;
-    font-size: 16px;
+    color: #e3db02;
+    font-size: 20px;
     font-weight: 200;
-    margin: 0;
+    margin: 5px;
 }
 
 .tasa, .value {
-    margin: 0;
+    font-weight: 100;
+    margin: 5px;
     color: #fff;
+    font-size: 17px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.sections {
+    margin: 15px 0px;
 }
 
 .desc {
@@ -87,6 +93,7 @@ article {
 
 .sub {
     color: #488aec;
+    margin: 4px 0px;
 }
 
 .info {
@@ -121,6 +128,19 @@ form {
 .form {
     display: flex;
     flex-wrap: wrap;
+}
+
+.example {
+    color: #e9e6f0;
+    margin: 3px;
+}
+
+.exam {
+    color: #e3db02;
+}
+
+.title-update {
+    color: #3255A0;
 }
 
 .form p {
@@ -194,7 +214,7 @@ form {
   }
 
 .update-form {
-    margin-top: 20px;
+    margin: 20px 0px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -203,7 +223,7 @@ form {
 }
 
 .update-form h1 {
-    color: #fff;
+    color: #3255A0;
     text-align: center;
     font-weight: 200;
 }

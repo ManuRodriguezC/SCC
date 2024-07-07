@@ -4,6 +4,7 @@ from .forms import SalaryForm, SocialesRetencionForm, SocialesForm, ExtraForm, T
 from .models import Salary, SocialesRetencion, Sociales, Extra, Tasas
 from django.contrib import messages
 from .pagoMensual import pagoMensual
+from .scoreInterno import calculateInterScore
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
@@ -17,7 +18,7 @@ def simulador(request):
     extras = Extra.objects.all()
     
     salario = Salary.objects.all()
-    currentSalari = salario[0].value.replace(".", "")
+    # currentSalari = salario[0].value.replace(".", "")
 
     if request.method == 'POST':
         data = {
@@ -39,6 +40,8 @@ def simulador(request):
         cuotas = next((request.POST.get(value) for value in valuesCuotas if request.POST.get(value)))
         
         tipocredito = ""
+        score = None
+        scoreInterno = None
     
         if SocialesRetencion.objects.filter(name=typeCredit).exists():
             tipocredito = "socialretencion"
@@ -105,25 +108,26 @@ def simulador(request):
                     messages.error(request, f"El plazo máximo de cuotas para la linea {currentType.name} es {currentType.plazoMax}.")
                     return redirect('/')
                 typeperson = request.POST.get('typeperson')
+                if typeperson == "Empleado o pensionado Ventanilla" or typeperson == "Independiente":
+                    scoreInterno = calculateInterScore(request)
+                    
                 tasas = Tasas.objects.filter(name=typeperson)
                 score = request.POST.get('score')
                 if int(score) > 1000 or int(score) <= 0:
                     messages.error(request, f"El rango de score debe estar entre 1 y 1000")
                     return redirect('/')
-                for tasa in tasas:
-                    if int(score) > float(tasa.scoreMin) and int(score) <= float(tasa.scoreMax):
-                        plazoMax = tasa.plazoMax
-                        tasa = float(tasa.tasa)
-                        break
-                    else:
-                        messages.error(request, f"Su score no aplica para solicitar un credito.")
-                        return redirect('/')
-                        
+                tasa = 0
+                for d in tasas:
+                    if int(score) >= float(d.scoreMin) and int(score) <= float(d.scoreMax):
+                        plazoMax = d.plazoMax
+                        tasa = float(d.tasa)
+                if tasa == 0:
+                    messages.error(request, f"Su score no aplica para solicitar un credito.")
+                    return redirect('/')
 
         request.session['form_data'] = data
         
         # montoMaximoCredit = int(currentSalari.replace(".", "")) * currentType.montoMax
-        print(plazoMax)
         if int(cuotas) > int(plazoMax):
             messages.error(request, f"El plazo máximo de cuotas es {plazoMax}.")
             return redirect('/')
@@ -169,7 +173,9 @@ def simulador(request):
             'totales': int(ingresosTotales),
             'cuota': montoMensual,
             'capacidad': capacidadPago,
-            'montomaximo': montoMax
+            'montomaximo': montoMax,
+            'score': score if score else "No Aplica",
+            'scoreInterno': scoreInterno if scoreInterno else "No Aplica"
         }
         del request.session['form_data']
         request.session['calculos'] = {'datas': datas}
@@ -371,7 +377,7 @@ def generatePdf(request):
     # p.drawImage("http://127.0.0.1:6001/static/images/logo_cootratiempo.jpg", 30, 730, width=60, height=80)
     p.setFont("Helvetica-Bold", 25)
     p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(110, 760, "Simulación de Credito Cootratiempo")
+    p.drawString(85, 760, "Simulación de Credito Cootratiempo")
         
     p.roundRect(360, 700, width=150, height=30, radius=10)
     p.setFont("Helvetica-Bold", 10)
@@ -381,7 +387,7 @@ def generatePdf(request):
     
     p.setFont("Helvetica-Bold", 18)
     p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(200, 670, "Información Asociado")
+    p.drawString(200, 665, "Información Asociado")
     
     p.roundRect(90, 555, width=420, height=105, radius=10)
     p.setFont("Helvetica", 12)
@@ -401,30 +407,34 @@ def generatePdf(request):
 
     p.setFont("Helvetica-Bold", 18)
     p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(200, 520, "Datos de la Solicitud")
+    p.drawString(200, 524, "Datos de la Solicitud")
     
     p.setFont("Helvetica", 12)
     p.setFillColorRGB(0, 0, 0)
-    p.roundRect(90, 420, width=420, height=90, radius=10)
-    p.drawString(125, 490, "Tipo de Credito")
-    p.drawString(350, 490, str(datos['datas']['type']))
-    p.drawString(125, 475, "Monto a Solicitar")
-    p.drawString(350, 475, f"$ {str(datos['datas']['monto'])}")
-    p.drawString(125, 460, "Numero de cuotas")
-    p.drawString(350, 460, str(datos['datas']['cuotas']))
-    p.drawString(125, 445, "Tasa Nominal Anual")
-    p.drawString(350, 445, f"{str(datos['datas']['tasaAnual'])} %")
-    p.drawString(125, 430, "Tasa Nominal Mensual")
-    p.drawString(350, 430, f"{str(datos['datas']['tasaMensual'])} %")
+    p.roundRect(90, 410, width=420, height=110, radius=10)
+    p.drawString(125, 505, "Tipo de Credito")
+    p.drawString(350, 505, str(datos['datas']['type']))
+    p.drawString(125, 490, "Monto a Solicitar")
+    p.drawString(350, 490, f"$ {str(datos['datas']['monto'])}")
+    p.drawString(125, 475, "Numero de cuotas")
+    p.drawString(350, 475, str(datos['datas']['cuotas']))
+    p.drawString(125, 460, "Tasa Nominal Anual")
+    p.drawString(350, 460, f"{str(datos['datas']['tasaAnual'])} %")
+    p.drawString(125, 445, "Tasa Nominal Mensual")
+    p.drawString(350, 445, f"{str(datos['datas']['tasaMensual'])} %")
+    p.drawString(125, 430, "Score")
+    p.drawString(350, 430, f"{str(datos['datas']['score'])}")
+    p.drawString(125, 415, "Score Interno")
+    p.drawString(350, 415, f"{str(datos['datas']['scoreInterno'])}")
     
     
     p.setFont("Helvetica-Bold", 18)
     p.setFillColorRGB(0.196, 0.333, 0.627)
-    p.drawString(180, 385, "Datos de la Simulación")
+    p.drawString(190, 375, "Datos de la Simulación")
     
     p.setFont("Helvetica", 12)
     p.setFillColorRGB(0, 0, 0)
-    p.roundRect(90, 285, width=420, height=90, radius=10)
+    p.roundRect(90, 290, width=420, height=80, radius=10)
     p.drawString(125, 355, "Aporte seguridad social")
     p.drawString(350, 355, f"$ {formatNumber(str(datos['datas']['seguridad']))}")
     p.drawString(125, 340, "Ingresos Totales")
@@ -485,10 +495,12 @@ def generatePdf(request):
         p.drawString(70, pos, parag)
         pos -= 10
     
-    p.setFont("Helvetica-Bold", 14)
-    p.drawString(60, 115, "Términos y Condiciones")
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(40, pos - 30, "Puntos para tener en cuenta")
     
-    condiciones = "Esta simulación está sujeta a verificación de los datos suministrados por el asociado, los cuales a la hora de solicitar el crédito serán presentados por el mismo y revisados por el área de crédito encargada. A su vez estará sujeta a tasas, requisitos, garantías o líneas vigentes por la Cooperativa Contratiempo. A la hora de solicitar el crédito deben cumplirse con todos los reglamentos según el estatuto actual y vigente por la Cooperativa Contratiempo. Este documento da soporte solo a una simulación, lo cual no representa una probación de crédito ya que requiere ser revisado y validado por el área encargada. Algunas líneas de crédito según el monto o tipo del mismo, requerirán de garantías como Codeudores, pago de seguros o aportes."
+    pos -= 30
+    
+    condiciones = """1. Esta simulación es de carácter informativa. Los valores reales dependerán de las tasas de interés y las políticas establecidas por COOTRATIEMPO al momento del desembolso. 2. El cupo de crédito no sólo se establece por los aportes sociales, ahorros o garantía que nos ofreces, igualmente el estudio del perfil y tu capacidad de pago es definitivo. 3. El estudio de crédito se realizará una vez entregues y diligencies la totalidad de documentos requeridos para el trámite, los cuales te serán informados por tu asesor. 4. Los valores de la simulación no incluyen la cuota de seguro, estos valores pueden tener variaciones en el tiempo."""
     splitText = condiciones.split(" ")
     numberLetter = 0
     listParagraph = []
@@ -496,19 +508,43 @@ def generatePdf(request):
     for word in splitText:
         paragraph += word + " "
         numberLetter += len(word)
-        if numberLetter > 117:
+        if numberLetter > 125:
             listParagraph.append(paragraph)
             paragraph = ""
             numberLetter = 0
     if paragraph != "":
         listParagraph.append(paragraph)
     
-    pos = 100
+    pos -= 10
     p.setFont("Helvetica-Oblique", 7)
     for parag in listParagraph:
-        p.drawString(60, pos, parag)
+        p.drawString(40, pos , parag)
         pos -= 10
 
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(40, pos - 16, "Autorización consulta y reportes en Centrales de Riesgo")
+    
+    pos -= 16
+    condiciones = """Autorizo en nombre propio y en mi calidad de representante legal a COOTRATIEMPO Cooperativa Financiera o a quien represente sus derechos, a consultar, reportar y tratar ante centrales de riesgo crediticio lo referente a mi comportamiento financiero y el de la entidad que represento, y en especial reportar el nacimiento, modificación, extinción de obligaciones contraídas o que llegare a contraer con COOTRATIEMPO, los saldos que a su favor resulten de todas las operaciones de crédito, financieras, comercial y/o de servicios, que bajo cualquier modalidad me hubiese otorgado o me otorgue en el futuro; esto implica que mi información financiera, crediticia, comercial y/o de servicios reportada permanecerá en tales centrales de crédito durante el tiempo que la misma ley establezca, de acuerdo con el momento y las condiciones en que se efectúe el pago de las obligaciones."""
+    splitText = condiciones.split(" ")
+    numberLetter = 0
+    listParagraph = []
+    paragraph = ""
+    for word in splitText:
+        paragraph += word + " "
+        numberLetter += len(word)
+        if numberLetter > 135:
+            listParagraph.append(paragraph)
+            paragraph = ""
+            numberLetter = 0
+    if paragraph != "":
+        listParagraph.append(paragraph)
+    
+    pos -= 10
+    p.setFont("Helvetica-Oblique", 7)
+    for parag in listParagraph:
+        p.drawString(40, pos , parag)
+        pos -= 10
     
     
     p.showPage()

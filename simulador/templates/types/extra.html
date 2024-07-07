@@ -24,9 +24,78 @@
             {% for type in extras %}
                 <option value="{{type.name}}">{{type.name}}</option>
             {% endfor %}
-        
         </select>
 
+        <p id="text-complement" class="text-complement">Por favor ingrese los siguientes datos para poder realizar su solicitud.</p>
+
+        <div id="more-datas" class="more-datas">
+            <div>
+                <p>Rango de Edad</p>
+                <select id="moreYears" name="moreYears">
+                    <option value="">-- Seleccione un Rango de Edad --</option>
+                    <option value="Hasta 30">Hasta 30 años</option>
+                    <option value="Mayor a 30 Menor a 50">Mayor a 30 años y Hasta 50 años</option>
+                    <option value="Mayor a 50">Mayor a 50 años</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Estado Civil</p>
+                <select id="moreState" name="moreState">
+                    <option value="">-- Selelccione su Estado Civil --</option>
+                    <option value="Casado">Casado</option>
+                    <option value="Soltero">Soltero</option>
+                    <option value="Union Libre">Union Libre</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Tipo de Vivienda</p>
+                <select id="moreLive" name="moreLive">
+                    <option value="">-- Seleccione su tipo de Vivienda --</option>
+                    <option value="Familiar / Arriendo">Familiar / Arriendo</option>
+                    <option value="Propia">Propia</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Genero</p>
+                <select id="moreGender" name="moreGender">
+                    <option value="">-- Seleccione su genero --</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Nivel Academico</p>
+                <select id="moreStudy" name="moreStudy">
+                    <option value="">--Seleccione su Nivel Academico --</option>
+                    <option value="Desconocido">Desconocido / Secundaria / Tecnica</option>
+                    <option value="Universitario">Universitario / Masestria / Doctorado</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Ingreso Mensual</p>
+                <select id="moreIng" name="moreIng">
+                    <option value="">-- Seleccione su Ingreso Mensual --</option>
+                    <option value="Hasta 2 SMMLV">Hasta 2 SMMLV</option>
+                    <option value="Mayor a 2 SMMLV">Mayor a 2 SMMLV</option>
+                </select>
+            </div>
+            
+            <div>
+                <p>Antiguedad como Asociado</p>
+                <select id="moreTime" name="moreTime">
+                    <option value="">-- Seleccione su Antiguendad como asociado --</option>
+                    <option value="Hasta 4 años">Hasta 4 años</option>
+                    <option value="Mayor a 4 años">Mayor a 4 años</option>
+                </select>
+            </div>
+        </div>
+            
         <div class="three">
             <h2 class="title-2">3. Ingresa el monto, plazo de tu credito y score.</h2>
             
@@ -84,4 +153,41 @@
             inputElement.value = newValue.split("").reverse().join(""); // Revierte el valor y lo establece en el input
         }
       
+        const typePerson = document.getElementById("typeperson")
+        typePerson.addEventListener("change", () => {
+            text = document.getElementById("text-complement")
+            div = document.getElementById("more-datas")
+            years = document.getElementById("moreYears")
+            state = document.getElementById("moreState")
+            live = document.getElementById("moreLive")
+            gender = document.getElementById("moreGender")
+            study = document.getElementById("moreStudy")
+            ing = document.getElementById("moreIng")
+            time = document.getElementById("moreTime")
+            if (typePerson.value === "Empleado o pensionado Ventanilla" || typePerson.value === "Independiente") {
+                text.classList.add("see-text-complement")
+                div.classList.add("see-more-datas")
+                years.required = true
+                state.required = true
+                live.required = true
+                gender.required = true
+                study.required = true
+                ing.required = true
+                time.required = true
+            } else {
+                text.classList.remove("see-text-complement")
+                div.classList.remove("see-more-datas")
+                years.required = false
+                state.required = false
+                live.required = false
+                gender.required = false
+                study.required = false
+                ing.required = false
+                time.required = false
+            }
+        })
+
+
+        
+
       </script>

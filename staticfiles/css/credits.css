@@ -35,6 +35,7 @@
   height: 40px;
   display: flex;
   flex-direction: row;
+  text-align: center;
   margin: 0;
   padding: 0;
 }
@@ -44,11 +45,12 @@
   flex-direction: row;
 }
 
+
 .bt-type {
   height: 100%;
   width: 50%;
   margin: 0;
-  padding: 0;
+  padding: 10px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,20 +63,20 @@
 }
 
 .select {
-  font-size: 28px;
+  font-size: 26px;
   color: #3255a0;
   background-color: #fff;
   opacity: 1;
 }
 
-.type-1,.type-2 {
+.type-1, .type-2, .type-3 {
   width: 100%;
   opacity: 0;
   height: 0;
   display: none;
 }
 
-.visible-1,.visible-2 {
+.visible-1,.visible-2, .visible-3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,10 +86,15 @@
   transition: opacity .5s ease-in-out all;
 }
 
+@media (max-width: 857px) {
+  .select {
+    font-size: 20px;
+  }
+}
 
 @media (max-width: 620px) {
   .bt-type {
-    font-size: 20px;
+    font-size: 17px;
   }
   .select {
     font-size: 22px;
@@ -95,17 +102,23 @@
   .title-2 {
     font-size: 25px;
   }
+  .title-types {
+    font-size: 35px;
+  }
 }
 
 @media (max-width: 420px) {
   .bt-type {
-    font-size: 15px;
+    font-size: 14px;
   }
   .select {
-    font-size: 17px;
+    font-size: 16px;
   }
   .title-2 {
     font-size: 20px;
+  }
+  .title-types {
+    font-size: 35px;
   }
 }
 
