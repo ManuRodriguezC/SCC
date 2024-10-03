@@ -8,7 +8,7 @@
     transform: translate(-50%, -50%); /* Esto asegura que el diálogo esté perfectamente centrado independientemente del tamaño de su contenedor */
     z-index: 2;
     width: 90vw;
-    height: 90vh;
+    height: 96vh;
     border-radius: 20px;
     border: 5px solid #3255a0;
     background-color: #fff;
@@ -159,4 +159,35 @@ h4 {
     .info-simulation div {
         width: 90%;
     }
+}
+
+
+
+.contacto {
+    position: fixed; /* Cambia a 'fixed' para que el botón se mantenga en la misma posición al hacer scroll */
+    z-index: 2000;
+    right: 30px;
+    bottom: 30px;
+    background-color: red;
+    height: 180px;
+    width: 180px;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.contacto p {
+    height: 165px;
+    width: 165px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3255a0;
 }

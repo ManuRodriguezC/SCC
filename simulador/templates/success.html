@@ -1,0 +1,16 @@
+{% extends "simulador.html" %}
+
+{% load static %}
+
+
+{% block styles %}
+    <link href="{% static "css/dialog.css" %}" rel="stylesheet">
+    <link href="{% static "css/simulador.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block simulacion %}
+
+    <div class="success" id="success">
+        <p>Pronto nos contactaremos con tigo</p>
+    </div>
+{% endblock %}

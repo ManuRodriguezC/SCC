@@ -19,7 +19,9 @@ urlpatterns = [
     path('salario/', views.salary, name="salario"),
     path('salario/<int:id>/update/', views.updateSalary, name="salario_update"),
     path('deletesalario/<int:id>/', views.delete_salario, name="salario_delete"),
-    path('downloadSimulation', views.generatePdf, name="download")
+    path('downloadSimulation', views.generatePdf, name="download"),
+    path('formulario-contacto', views.envioCorreo, name="formulario"),
+    path('envio-exitoso', views.success_page, name="success")
 ]
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import SalaryForm, SocialesRetencionForm, SocialesForm, ExtraForm, TasasForm
+from .forms import SalaryForm, SocialesRetencionForm, SocialesForm, ExtraForm, TasasForm, ContactForm
 from .models import Salary, SocialesRetencion, Sociales, Extra, Tasas
 from django.contrib import messages
 from .pagoMensual import pagoMensual
@@ -10,6 +10,9 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 import datetime
 from .formatNumber import formatNumber
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 def simulador(request):
@@ -42,7 +45,7 @@ def simulador(request):
         tipocredito = ""
         score = None
         scoreInterno = None
-        descuento = 30
+        descuento = 50
     
         if SocialesRetencion.objects.filter(name=typeCredit).exists():
             tipocredito = "socialretencion"
@@ -139,10 +142,10 @@ def simulador(request):
         seguridadSocial = (ingresosSalario * 8) / 100
         ingresosOtros = int(data['others'].replace(".", ""))
         egresos = int(data['debit'].replace(".", ""))
-        ingresosTotales = ingresosSalario + ingresosOtros
+        ingresosTotales = ingresosSalario + ingresosOtros - seguridadSocial
         
-        capacidadPago = int(((ingresosTotales * descuento) / 100) - egresos)
-            
+        capacidadPago = int((ingresosTotales * (descuento / 100)) - egresos)
+        
         montoMensual = pagoMensual(monto, tasa, cuotas)
         
         montoMax = int((int(monto.replace(".", "")) * capacidadPago) / montoMensual)
@@ -195,7 +198,43 @@ def simulador(request):
     
 def simulacion(request):
     datos = request.session.get('calculos', {})
+    if not datos:
+        return redirect('/')
     return render(request, 'dialog.html', datos)
+
+def envioCorreo(request):
+    datos = request.session.get('calculos', {})
+    if not datos:
+        return redirect('/')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            
+            html_message = render_to_string('email.html', {
+                'name': f"{datos['datas']['data']['name']} {datos['datas']['data']['lastname']}",
+                'phone': phone,
+                'email': email,
+                'line': datos['datas']['type'],
+            })
+            
+            email_message = EmailMessage(
+                'Solicitud de Credito',
+                html_message,
+                'estebanclimb@gmail.com',
+                ['manu.rodriguezc.dev@gmail.com']
+            )
+            email_message.content_subtype = 'html'
+            email_message.send()
+            # del request.session['calculos']    
+            return redirect('/')
+    else:
+        form = ContactForm()
+    return render(request, 'contact.html', {'form': form, 'datos': datos})
+
+def success_page(request):
+    return render(request, 'success.html')
 
 @login_required
 def socialRetencion(request):
