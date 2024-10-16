@@ -161,8 +161,6 @@ h4 {
     }
 }
 
-
-
 .contacto {
     position: fixed; /* Cambia a 'fixed' para que el botón se mantenga en la misma posición al hacer scroll */
     z-index: 2000;
@@ -179,6 +177,7 @@ h4 {
     text-decoration: none;
     border-radius: 50%;
     font-size: 20px;
+    transition: all .3s ease-in-out;
 }
 
 .contacto p {
@@ -190,4 +189,56 @@ h4 {
     justify-content: center;
     align-items: center;
     background-color: #3255a0;
+}
+
+.contacto:hover {
+    transform: scale(1.1);
+}
+
+/* Styles for Success Send Email */
+
+.success {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    display: flex; /* Para centrar contenido */
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+}
+
+.back-filter {
+    width: 100%;
+    height: 100%;
+    filter: blur(20px);
+    position: absolute;
+    background-color: rgba(1, 11, 32, 0.7); /* Color de fondo con opacidad */
+    top: 0;
+    left: 0;
+}
+
+.content-success {
+    position: relative; /* Para que esté sobre el filtro */
+    color: white; /* Color del texto */
+    z-index: 3001; /* Asegúrate de que esté por encima del filtro */
+    text-align: center; /* Centrar texto */
+    width: 500px;
+    height: 300px;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #3255a0;
+}
+
+.content-success h3 {
+    font-size: 30px;
+}
+
+.content-success p {
+    font-size: 20px;
 }

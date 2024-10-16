@@ -12,7 +12,6 @@ import datetime
 from .formatNumber import formatNumber
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 
 
 def simulador(request):
@@ -223,12 +222,12 @@ def envioCorreo(request):
                 'Solicitud de Credito',
                 html_message,
                 'estebanclimb@gmail.com',
-                ['manu.rodriguezc.dev@gmail.com']
+                ['manu.rodriguezc.dev@gmail.com', 'lysanchezal@gmail.com']
             )
             email_message.content_subtype = 'html'
             email_message.send()
-            # del request.session['calculos']    
-            return redirect('/')
+            del request.session['calculos']    
+            return redirect('success')
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form, 'datos': datos})
