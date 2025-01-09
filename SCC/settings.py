@@ -81,6 +81,17 @@ DATABASES = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': 'localhost',
+#         'NAME': 'simuladorCootratiempo',
+#         'USER': 'postgres',
+#         'PASSWORD': 'simulador123',
+#         'PORT': '5431'
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

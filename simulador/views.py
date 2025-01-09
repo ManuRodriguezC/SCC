@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from .forms import SalaryForm, SocialesRetencionForm, SocialesForm, ExtraForm, TasasForm, ContactForm
 from .models import Salary, SocialesRetencion, Sociales, Extra, Tasas
-from django.contrib import messages
-import datetime
-from .pagoMensual import pagoMensual
-from .scoreInterno import calculateInterScore
-from .generatePDF import createPdf
-from django.http import FileResponse
-from django.core.mail import EmailMessage
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+from .scoreInterno import calculateInterScore
+from django.core.mail import EmailMessage
+from .formatNumber import formatNumber
+from .pagoMensual import pagoMensual
+from django.http import FileResponse
+from django.contrib import messages
+from .generatePDF import createPdf
+import datetime
 
 
 def simulador(request):
@@ -17,9 +18,15 @@ def simulador(request):
     sociales = Sociales.objects.all()
     extras = Extra.objects.all()
     
-    salario = Salary.objects.all()
-    # currentSalari = salario[0].value.replace(".", "")
-
+    montoMaximoEducacion12 = 20000000
+    montoMaximoEducacion24 = 60000000
+    montoMaximoCrediSalud = 7000000
+    montoMaximoCreditoTemporada = 8000000
+    montoMaximoCrediExpress = 10000000
+    
+    salarioMinimo = Salary.objects.all()
+    currentSalari = salarioMinimo[0].value.replace(".", "")
+    
     if request.method == 'POST':
         data = {
             'name' : request.POST.get('name'),
@@ -104,6 +111,7 @@ def simulador(request):
                     tasa = float(rangos8[5]) 
         else:  
             if Extra.objects.filter(name=typeCredit).exists():
+                tipocredito = "extracupo"
                 currentType = Extra.objects.get(name=typeCredit)
                 if int(cuotas) > int(currentType.plazoMax):
                     messages.error(request, f"El plazo máximo de cuotas para la linea {currentType.name} es {currentType.plazoMax}.")
@@ -151,7 +159,55 @@ def simulador(request):
             montoMax = montoMaximoCredit
 
         if tipocredito != "socialretencion":
-            if int(monto.replace(".", "")) > montoMax:
+            controlsEducacion = [
+                "Educacion Formal", "Educacion No Formal",
+            ]
+            if (currentType.name in controlsEducacion):
+                if (int(cuotas) <= 12 and int(monto.replace(".", "")) > montoMaximoEducacion12):
+                    messages.error(request, f"El monto máximo para esta linea a este numero de cuotas es $ {formatNumber(montoMaximoEducacion12)}")
+                    return redirect('/')
+                elif ((int(cuotas) > 12 and int(cuotas) <= 24) and int(monto.replace(".", "")) > montoMaximoEducacion24):
+                    messages.error(request, f"El monto máximo para esta linea a este numero de cuotas es $ {formatNumber(montoMaximoEducacion24)}")
+                    return redirect('/')
+
+            if (currentType.name == "Credisalud" and (int(cuotas) >= 6 and int(cuotas) <= 48) and int(monto.replace(".", "")) > montoMaximoCrediSalud):
+                messages.error(request, f"El monto máximo para esta linea a este numero de cuotas es $ {formatNumber(montoMaximoCrediSalud)}")
+                return redirect('/')
+        
+            if (tipocredito == "extracupo"):
+                setMonto = int(monto.replace(".", ""))
+                if (currentType.name == "Anticipo de Prima" and setMonto > int(ingresosSalario * 0.8)):
+                    messages.error(request, f"El monto máximo de anticipo Prima es de $ {formatNumber(int(ingresosSalario * 0.8))}")
+                    return redirect('/')
+                if (currentType.name == "Anticipo de Sueldo" and setMonto > int(ingresosSalario * 0.45)):
+                    messages.error(request, f"El monto máximo de anticipo Sueldo es de $ {formatNumber(int(ingresosSalario * 0.45))}")
+                    return redirect('/')
+                if currentType.name == "Credito de Temporada" and setMonto > montoMaximoCreditoTemporada:
+                    messages.error(request, f"El monto máximo de Crédito de Temporada es de $ {formatNumber(montoMaximoCreditoTemporada)}")
+                    return redirect('/')
+                if currentType.name == "CrediExpress" and setMonto > montoMaximoCrediExpress:
+                    messages.error(request, f"El monto máximo de CrediExpress es de $ {formatNumber(montoMaximoCrediExpress)}")
+                    return redirect('/')
+                if currentType.name == "Credito de Bienvenida":
+                    if typeperson == "Independiente":
+                        if setMonto > (int(currentSalari) * 2):
+                            messages.error(request, f"El monto máximo de Credito de Bienvenida para Independiente es de $ {formatNumber(int(currentSalari) * 2)}")
+                            return redirect('/')
+                    else:
+                        if setMonto > ingresosSalario:
+                            messages.error(request, f"El monto máximo de Credito de Bienvenida para Pensionados e Empleados es de $ {formatNumber(ingresosSalario)}")
+                            return redirect('/')
+                else:
+                    if (capacidadPago <= 0):
+                        messages.error(request, f"No tiene Capacidad de Pago para solicitar un crédito.")
+                        return redirect('/')
+                    if int(monto.replace(".", "")) > montoMax:
+                        number = formatNumber(montoMax)
+                        messages.error(request, f"El monto máximo según la capacidad de pago es de $ {number}")
+                        return redirect('/')
+        
+
+            elif int(monto.replace(".", "")) > montoMax and currentType.name not in ["Anticipo de Prima", "Anticipo de Sueldo"]:
                 if montoMax < 0:
                     messages.error(request, f"Su capacidad de pago no aplica para solicitar un crédito.")
                 else:
@@ -175,9 +231,9 @@ def simulador(request):
             'requisitos': currentType.requisitos,
             'seguridad': int(seguridadSocial),
             'totales': int(ingresosTotales),
-            'cuota': montoMensual,
-            'capacidad': capacidadPago,
-            'montomaximo': montoMax,
+            'cuota': montoMensual if montoMensual > 0 else 0,
+            'capacidad': capacidadPago if capacidadPago > 0 else 0,
+            'montomaximo': montoMax if montoMax > 0 else 0,
             'score': score if score else "No Aplica",
             'scoreInterno': scoreInterno if scoreInterno else "No Aplica"
         }
